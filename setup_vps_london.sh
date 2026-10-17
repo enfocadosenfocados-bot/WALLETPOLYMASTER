@@ -49,7 +49,8 @@ Type=simple
 User=$CURRENT_USER
 WorkingDirectory=$REPO_DIR
 EnvironmentFile=$REPO_DIR/.env
-ExecStart=$REPO_DIR/.venv/bin/python $REPO_DIR/bot.py
+Environment="PYTHONUNBUFFERED=1"
+ExecStart=$REPO_DIR/.venv/bin/python -u $REPO_DIR/bot.py
 Restart=always
 RestartSec=5
 LimitNOFILE=65535
