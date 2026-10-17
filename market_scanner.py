@@ -41,9 +41,16 @@ class AutonomousMarketScanner:
             f"{self.cfg.GAMMA_EVENTS_URL}?active=true&closed=false"
             f"&limit={limit}&order=volume24hr&ascending=false"
         )
-        req = urllib.request.Request(url, headers=self.headers)
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            return json.loads(resp.read().decode("utf-8"))
+        for attempt in range(3):
+            try:
+                req = urllib.request.Request(url, headers=self.headers)
+                with urllib.request.urlopen(req, timeout=15) as resp:
+                    return json.loads(resp.read().decode("utf-8"))
+            except Exception as e:
+                if attempt == 2:
+                    print(f"⚠️ [GAMMA API WARNING] Fallo temporal al consultar eventos ({e}). Se reintentará en el próximo ciclo.")
+                    return []
+        return []
 
     def scan_and_select_all(self, max_per_strategy: int = 3) -> Dict[str, List[SelectedMarket]]:
         events = self.fetch_active_events(150)

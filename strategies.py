@@ -23,6 +23,7 @@ class MultiStrategyCoordinator:
         self.cfg = config
         self.engine = engine
         self.tracked_markets_by_token: Dict[str, SelectedMarket] = {}
+        self.tracked_markets_by_condition: Dict[str, SelectedMarket] = {}
         self.live_book_state: Dict[str, Dict[str, float]] = {}
         self.rolling_ema_mid: Dict[str, float] = {}
 
@@ -40,18 +41,92 @@ class MultiStrategyCoordinator:
                     outcome_a=sm.outcome_a,
                     outcome_b=sm.outcome_b,
                 )
+                self.tracked_markets_by_condition[sm.condition_id] = sm
                 self.tracked_markets_by_token[sm.token_a] = sm
                 self.tracked_markets_by_token[sm.token_b] = sm
                 all_token_ids.extend([sm.token_a, sm.token_b])
 
-                self.live_book_state[sm.token_a] = {"bid": sm.best_bid_a, "ask": sm.best_ask_a}
-                self.live_book_state[sm.token_b] = {"bid": sm.best_bid_b, "ask": sm.best_ask_b}
-                self.rolling_ema_mid[sm.token_a] = (sm.best_bid_a + sm.best_ask_a) / 2.0
-                self.rolling_ema_mid[sm.token_b] = (sm.best_bid_b + sm.best_ask_b) / 2.0
+                if sm.token_a not in self.live_book_state:
+                    self.live_book_state[sm.token_a] = {"bid": sm.best_bid_a, "ask": sm.best_ask_a}
+                    self.rolling_ema_mid[sm.token_a] = (sm.best_bid_a + sm.best_ask_a) / 2.0
+                if sm.token_b not in self.live_book_state:
+                    self.live_book_state[sm.token_b] = {"bid": sm.best_bid_b, "ask": sm.best_ask_b}
+                    self.rolling_ema_mid[sm.token_b] = (sm.best_bid_b + sm.best_ask_b) / 2.0
 
                 self._seed_initial_strategy_orders(sm)
 
         return list(dict.fromkeys(all_token_ids))
+
+    def sync_and_rotate_markets(self, new_buckets: Dict[str, List[SelectedMarket]], now: float) -> Dict[str, int]:
+        """
+        Sincroniza el portafolio cada MARKET_SCAN_INTERVAL_SEC (para operación continua 24/7):
+        1. Purga órdenes de entrada que quedaron obsoletas (lejos del precio actual tras STALE_ENTRY_ORDER_TIMEOUT_SEC).
+        2. Para mercados que salieron del Top-N del escáner:
+           - Si NO tienen inventario abierto (shares_a == 0 y shares_b == 0), cancela sus órdenes de entrada para liberar margen.
+           - Si SÍ tienen inventario abierto (esperando su Segunda Pata Hedge), los mantiene monitoreados en el WebSocket hasta que cierren.
+        3. Incorpora los nuevos mercados detectados por Gamma API y despliega sus órdenes Maker iniciales.
+        """
+        stale_pruned = self.engine.prune_stale_entry_orders(self.live_book_state, now)
+
+        new_cids = {
+            sm.condition_id
+            for mlist in new_buckets.values()
+            for sm in mlist
+        }
+
+        retired_markets = 0
+        freed_orders = 0
+        for cid, old_sm in list(self.tracked_markets_by_condition.items()):
+            if cid not in new_cids:
+                inv = self.engine.inventories.get(cid)
+                has_active_inventory = inv is not None and (inv.shares_a > 0.01 or inv.shares_b > 0.01)
+                if not has_active_inventory:
+                    # Cancelamos órdenes de entrada y liberamos el cupo para el nuevo partido
+                    freed_orders += self.engine.cancel_entry_orders_for_condition(cid, include_hedge=True)
+                    self.tracked_markets_by_condition.pop(cid, None)
+                    self.tracked_markets_by_token.pop(old_sm.token_a, None)
+                    self.tracked_markets_by_token.pop(old_sm.token_b, None)
+                    retired_markets += 1
+                else:
+                    # Si tiene posición abierta esperando cobertura (Pata B), cancelamos solo entradas nuevas pero protegemos el Hedge
+                    freed_orders += self.engine.cancel_entry_orders_for_condition(cid, include_hedge=False)
+
+        added_markets = 0
+        for strategy_tag, mlist in new_buckets.items():
+            for sm in mlist:
+                if sm.condition_id not in self.tracked_markets_by_condition:
+                    added_markets += 1
+                self.engine.register_market_inventory(
+                    condition_id=sm.condition_id,
+                    question=sm.question,
+                    strategy_tag=sm.strategy_tag,
+                    token_a=sm.token_a,
+                    token_b=sm.token_b,
+                    outcome_a=sm.outcome_a,
+                    outcome_b=sm.outcome_b,
+                )
+                self.tracked_markets_by_condition[sm.condition_id] = sm
+                self.tracked_markets_by_token[sm.token_a] = sm
+                self.tracked_markets_by_token[sm.token_b] = sm
+                if sm.token_a not in self.live_book_state:
+                    self.live_book_state[sm.token_a] = {"bid": sm.best_bid_a, "ask": sm.best_ask_a}
+                    self.rolling_ema_mid[sm.token_a] = (sm.best_bid_a + sm.best_ask_a) / 2.0
+                if sm.token_b not in self.live_book_state:
+                    self.live_book_state[sm.token_b] = {"bid": sm.best_bid_b, "ask": sm.best_ask_b}
+                    self.rolling_ema_mid[sm.token_b] = (sm.best_bid_b + sm.best_ask_b) / 2.0
+
+                # Si el mercado activo no tiene órdenes abiertas (o fueron recotizadas por obsolescencia), vuelve a sembrar
+                self._seed_initial_strategy_orders(sm)
+
+        return {
+            "added_markets": added_markets,
+            "retired_markets": retired_markets,
+            "freed_orders": freed_orders + stale_pruned,
+            "active_tokens": len(self.tracked_markets_by_token),
+        }
+
+    def get_all_active_token_ids(self) -> List[str]:
+        return list(self.tracked_markets_by_token.keys())
 
     def _seed_initial_strategy_orders(self, sm: SelectedMarket):
         """Despliega las órdenes límite pasivas iniciales (postOnly=True) para las 10 estrategias."""

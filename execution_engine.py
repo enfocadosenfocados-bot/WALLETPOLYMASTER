@@ -51,6 +51,7 @@ class ConditionInventory:
     realized_merge_conv_pnl: float = 0.0
     maker_rebates_earned: float = 0.0
     merge_conv_count: int = 0
+    fills_count: int = 0
 
     @property
     def vwap_a(self) -> float:
@@ -77,7 +78,10 @@ class ExecutionEngine:
         self.cfg = config
         self.open_orders: Dict[str, OrderRecord] = {}
         self.filled_orders: List[OrderRecord] = []
+        self.total_fills_count: int = 0
         self.inventories: Dict[str, ConditionInventory] = {}
+        self.peak_strategy_committed_usdc: Dict[str, float] = {}
+        self.total_recycled_by_strategy: Dict[str, float] = {}
         self.total_exposure_usdc: float = 0.0
         self.total_recycled_usdc: float = 0.0
         self.onchain_ops_count: int = 0
@@ -109,7 +113,7 @@ class ExecutionEngine:
             self.clob_client.set_api_creds(self.clob_client.create_or_derive_api_creds())
 
     # =========================================================================
-    # GESTOR DINÁMICO DE MARGEN Y CUOTAS PARA CUENTA DE $1,000 USDC
+    # GESTOR DINÁMICO DE MARGEN ($1,000 REAL O TORNEO 10 x $1,000 AISLADOS)
     # =========================================================================
     def get_open_order_margin_usdc(self, strategy_tag: Optional[str] = None) -> float:
         return round(
@@ -131,10 +135,13 @@ class ExecutionEngine:
         )
 
     def get_strategy_committed_usdc(self, strategy_tag: str) -> float:
-        return round(
+        val = round(
             self.get_open_order_margin_usdc(strategy_tag) + self.get_invested_inventory_usdc(strategy_tag),
             2,
         )
+        if val > self.peak_strategy_committed_usdc.get(strategy_tag, 0.0):
+            self.peak_strategy_committed_usdc[strategy_tag] = val
+        return val
 
     def get_total_committed_usdc(self) -> float:
         return round(self.get_open_order_margin_usdc() + self.get_invested_inventory_usdc(), 2)
@@ -145,21 +152,30 @@ class ExecutionEngine:
 
     def can_allocate_margin(self, strategy_tag: str, usdc_amount: float, is_hedge_leg: bool = False) -> bool:
         """
-        Verifica si la cuenta de $1,000 USDC tiene margen libre:
-        - Si es una orden de apertura normal (is_hedge_leg=False), respeta la cuota de la estrategia
-          (STRATEGY_MAX_BUDGET_USDC) y respeta el límite de $880 USDC (dejando $120 de reserva).
-        - Si es una orden de Segunda Pata / Cobertura (is_hedge_leg=True), tiene acceso inmediato
-          a la Reserva de Cobertura ($120 USDC) para cerrar el arbitraje sin quedar atrapado.
+        Verifica si hay margen libre:
+        1. En modo TOURNAMENT_10K_EQUAL:
+           - Cada una de las 10 estrategias tiene su propia sub-cuenta aislada de $1,000.00 USDC:
+             * Apertura normal (is_hedge_leg=False): máximo $880.00 USDC por estrategia.
+             * Cobertura / Segunda Pata (is_hedge_leg=True): hasta $1,000.00 USDC ($880 + $120 de reserva propia).
+        2. En modo SMART_10_ROTATION / CORE_CONCENTRATED ($1,000 USDC totales):
+           - Apertura normal respeta STRATEGY_MAX_BUDGET_USDC y el tope global de $880 USDC.
+           - Cobertura (is_hedge_leg=True) tiene acceso a los $120 USDC de reserva global ($1,000 total).
         """
+        strat_committed = self.get_strategy_committed_usdc(strategy_tag)
+
+        if self.cfg.PORTFOLIO_MODE == "TOURNAMENT_10K_EQUAL":
+            if is_hedge_leg:
+                return (strat_committed + usdc_amount) <= self.cfg.TOURNAMENT_STRATEGY_TOTAL_USDC
+            return (strat_committed + usdc_amount) <= self.cfg.TOURNAMENT_STRATEGY_ENTRY_CAP_USDC
+
         if is_hedge_leg:
             return (self.get_total_committed_usdc() + usdc_amount) <= self.cfg.TOTAL_BANKROLL_USDC
 
-        # En modo concentrado ("CORE_CONCENTRATED"), ampliamos el presupuesto de las estrategias activas x1.8
         strat_cap = self.cfg.STRATEGY_MAX_BUDGET_USDC.get(strategy_tag, 80.0)
         if self.cfg.PORTFOLIO_MODE == "CORE_CONCENTRATED":
             strat_cap *= 1.8
 
-        if (self.get_strategy_committed_usdc(strategy_tag) + usdc_amount) > strat_cap:
+        if (strat_committed + usdc_amount) > strat_cap:
             return False
 
         return (self.get_total_committed_usdc() + usdc_amount) <= self.cfg.MAX_TOTAL_EXPOSURE_USDC
@@ -273,6 +289,50 @@ class ExecutionEngine:
             self.open_orders[oid].status = "CANCELLED"
             del self.open_orders[oid]
 
+    def cancel_entry_orders_for_condition(self, condition_id: str, include_hedge: bool = False) -> int:
+        """Cancela órdenes abiertas de un condition_id (protegiendo órdenes Hedge salvo que el mercado haya cerrado)."""
+        to_cancel = [
+            oid for oid, o in self.open_orders.items()
+            if o.condition_id == condition_id
+            and o.status == "OPEN"
+            and (include_hedge or not o.is_hedge_leg)
+        ]
+        for oid in to_cancel:
+            if self.cfg.LIVE_TRADING and self.clob_client:
+                try:
+                    self.clob_client.cancel(oid)
+                except Exception:
+                    pass
+            self.open_orders[oid].status = "CANCELLED"
+            del self.open_orders[oid]
+        return len(to_cancel)
+
+    def prune_stale_entry_orders(self, live_book_state: Dict[str, Dict[str, float]], now: float) -> int:
+        """
+        Recicla órdenes de apertura (no-hedge) que llevan más de STALE_ENTRY_ORDER_TIMEOUT_SEC sin ejecutarse
+        y cuyo precio quedó alejado más de REQUOTE_PRICE_DRIFT_THRESHOLD del mejor Bid actual (salvo S10_TENNIS_PENNY_DUST).
+        """
+        cancelled = 0
+        for oid, o in list(self.open_orders.items()):
+            if o.status != "OPEN" or o.is_hedge_leg or o.strategy_tag == "S10_TENNIS_PENNY_DUST":
+                continue
+            age = now - o.created_at
+            if age < self.cfg.STALE_ENTRY_ORDER_TIMEOUT_SEC:
+                continue
+            st = live_book_state.get(o.token_id)
+            if st and st.get("bid", 0.0) > 0:
+                drift = abs(st["bid"] - o.price)
+                if drift >= self.cfg.REQUOTE_PRICE_DRIFT_THRESHOLD:
+                    if self.cfg.LIVE_TRADING and self.clob_client:
+                        try:
+                            self.clob_client.cancel(oid)
+                        except Exception:
+                            pass
+                    o.status = "CANCELLED"
+                    del self.open_orders[oid]
+                    cancelled += 1
+        return cancelled
+
     def on_market_tick_simulate_fills(
         self, token_id: str, live_best_bid: float, live_best_ask: float, last_trade_price: Optional[float] = None
     ) -> List[OrderRecord]:
@@ -294,6 +354,8 @@ class ExecutionEngine:
                 order.filled_at = time.time()
                 del self.open_orders[oid]
                 self.filled_orders.append(order)
+                if len(self.filled_orders) > 5000:
+                    self.filled_orders = self.filled_orders[-2500:]
                 self._apply_fill_to_inventory(order)
                 newly_filled.append(order)
 
@@ -303,6 +365,8 @@ class ExecutionEngine:
         inv = self.inventories.get(order.condition_id)
         if not inv:
             return
+        inv.fills_count += 1
+        self.total_fills_count += 1
         usdc_val = round(order.price * order.size_shares, 4)
         rebate = round(usdc_val * 0.0015, 4) if order.post_only else 0.0
         inv.maker_rebates_earned += rebate
@@ -399,6 +463,9 @@ class ExecutionEngine:
         inv.merge_conv_count += 1
         self.total_exposure_usdc = max(0.0, self.total_exposure_usdc - combined_cost)
         self.total_recycled_usdc += round(payout_usdc, 2)
+        self.total_recycled_by_strategy[inv.strategy_tag] = round(
+            self.total_recycled_by_strategy.get(inv.strategy_tag, 0.0) + payout_usdc, 2
+        )
         self.onchain_ops_count += 1
         print(
             f"  ♻️ [AUTO-MERGE/CONVERSION {inv.strategy_tag}] Fusionadas {matched:.1f} acciones en '{inv.question[:38]}' "
