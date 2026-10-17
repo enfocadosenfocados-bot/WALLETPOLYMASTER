@@ -1,0 +1,92 @@
+{
+  "timestamp": "2026-10-17 01:22:05",
+  "elapsed_seconds": 25.0,
+  "ws_l2_events_processed": 9576,
+  "bankroll_usdc": 1000.0,
+  "free_margin_usdc": 473.25,
+  "total_fills": 2,
+  "total_recycled_usdc": 0.0,
+  "total_net_pnl_usdc": 0.039,
+  "strategies": {
+    "S1_VIGFREE_MAKER": {
+      "open_orders": 6,
+      "fills": 0,
+      "committed_margin_usdc": 72.0,
+      "arb_and_merge_pnl_usdc": 0.0,
+      "spread_pnl_usdc": 0.0,
+      "maker_rebates_usdc": 0.0
+    },
+    "S2_LIVE_DUTCHBOOK": {
+      "open_orders": 3,
+      "fills": 1,
+      "committed_margin_usdc": 62.81,
+      "arb_and_merge_pnl_usdc": 0.0,
+      "spread_pnl_usdc": 0.0,
+      "maker_rebates_usdc": 0.021
+    },
+    "S3_POSTONLY_4LEG_MM": {
+      "open_orders": 2,
+      "fills": 0,
+      "committed_margin_usdc": 30.0,
+      "arb_and_merge_pnl_usdc": 0.0,
+      "spread_pnl_usdc": 0.0,
+      "maker_rebates_usdc": 0.0
+    },
+    "S4_NEGRISK_ARB": {
+      "open_orders": 3,
+      "fills": 0,
+      "committed_margin_usdc": 36.0,
+      "arb_and_merge_pnl_usdc": 0.0,
+      "spread_pnl_usdc": 0.0,
+      "maker_rebates_usdc": 0.0
+    },
+    "S5_NEGRISK_CONV_MERGE": {
+      "open_orders": 6,
+      "fills": 0,
+      "committed_margin_usdc": 66.0,
+      "arb_and_merge_pnl_usdc": 0.0,
+      "spread_pnl_usdc": 0.0,
+      "maker_rebates_usdc": 0.0
+    },
+    "S6_LONGSHOT_SELL_MAKER": {
+      "open_orders": 3,
+      "fills": 0,
+      "committed_margin_usdc": 30.01,
+      "arb_and_merge_pnl_usdc": 0.0,
+      "spread_pnl_usdc": 0.0,
+      "maker_rebates_usdc": 0.0
+    },
+    "S7_SPREAD_MIDDLING": {
+      "open_orders": 6,
+      "fills": 0,
+      "committed_margin_usdc": 72.01,
+      "arb_and_merge_pnl_usdc": 0.0,
+      "spread_pnl_usdc": 0.0,
+      "maker_rebates_usdc": 0.0
+    },
+    "S8_NICHE_PROPS_CORNERS": {
+      "open_orders": 6,
+      "fills": 1,
+      "committed_margin_usdc": 82.93,
+      "arb_and_merge_pnl_usdc": 0.0,
+      "spread_pnl_usdc": 0.0,
+      "maker_rebates_usdc": 0.018
+    },
+    "S9_NCAAF_NFL_DEEP_ARB": {
+      "open_orders": 5,
+      "fills": 0,
+      "committed_margin_usdc": 70.0,
+      "arb_and_merge_pnl_usdc": 0.0,
+      "spread_pnl_usdc": 0.0,
+      "maker_rebates_usdc": 0.0
+    },
+    "S10_TENNIS_PENNY_DUST": {
+      "open_orders": 2,
+      "fills": 0,
+      "committed_margin_usdc": 5.0,
+      "arb_and_merge_pnl_usdc": 0.0,
+      "spread_pnl_usdc": 0.0,
+      "maker_rebates_usdc": 0.0
+    }
+  }
+}

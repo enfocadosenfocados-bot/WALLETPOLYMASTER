@@ -1,0 +1,10 @@
+# Credenciales privadas (NUNCA subir a GitHub)
+.env
+
+# Entornos virtuales y caché de Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
