@@ -67,6 +67,7 @@ class MultiStrategyCoordinator:
         3. Incorpora los nuevos mercados detectados por Gamma API y despliega sus órdenes Maker iniciales.
         """
         stale_pruned = self.engine.prune_stale_entry_orders(self.live_book_state, now)
+        self.engine.prune_unhedged_legging_risk(self.live_book_state, now)
 
         new_cids = {
             sm.condition_id

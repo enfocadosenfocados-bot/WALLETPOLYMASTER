@@ -30,11 +30,12 @@ class BotConfig:
     LIVE_TRADING: bool = os.getenv("LIVE_TRADING", "false").lower() == "true"
 
     # Modo de Asignación de Capital:
-    # - "TOURNAMENT_10K_EQUAL": Modo Torneo ($10,000 USDC totales = $1,000 USDC aislados por cada una de las 10 estrategias:
-    #                           $880 apertura + $120 reserva propia por estrategia, con tamaño de orden realista).
+    # - "LIVE_6_CHAMPIONS_1K" : Portafolio Maestro de $1,000 USDC concentrado en las 6 Estrategias Ganadoras
+    #                           de Arbitraje y Alta Rotación (S8, S1, S7, S2, S9, S10) + Fricción Realista Activada.
+    # - "TOURNAMENT_10K_EQUAL": Modo Torneo ($10,000 USDC totales = $1,000 USDC aislados por cada una de las 10 estrategias).
     # - "SMART_10_ROTATION"   : Modo Real $1,000 USDC repartidos dinámicamente entre las estrategias activas.
     # - "CORE_CONCENTRATED"   : Concentra el 100% del capital en las 5 estrategias de menor Drawdown y mayor rotación.
-    PORTFOLIO_MODE: str = os.getenv("PORTFOLIO_MODE", "TOURNAMENT_10K_EQUAL")
+    PORTFOLIO_MODE: str = os.getenv("PORTFOLIO_MODE", "LIVE_6_CHAMPIONS_1K")
 
     # Credenciales Wallet & CLOB
     PRIVATE_KEY: str = os.getenv("PRIVATE_KEY", "")
@@ -47,15 +48,15 @@ class BotConfig:
     ODDS_API_KEY: str = os.getenv("ODDS_API_KEY", "")
 
     # =========================================================================
-    # MOTOR DE GESTIÓN DE MARGEN ($1,000 REAL O $10,000 EN TORNEO 10x$1,000)
+    # MOTOR DE GESTIÓN DE MARGEN ($1,000 REAL / 6 CAMPEONAS O $10,000 TORNEO)
     # =========================================================================
     _IS_TOURNAMENT: bool = (PORTFOLIO_MODE == "TOURNAMENT_10K_EQUAL")
+    _IS_CHAMPIONS_6: bool = (PORTFOLIO_MODE == "LIVE_6_CHAMPIONS_1K")
 
-    # Si está en modo TOURNAMENT_10K_EQUAL, el Bankroll total del Torneo es $10,000 USDC ($1,000 por estrategia)
     TOTAL_BANKROLL_USDC: float = (
         10000.0 if _IS_TOURNAMENT else float(os.getenv("TOTAL_BANKROLL_USDC", "1000.0"))
     )
-    # Reserva intocable (12%) exclusiva para cerrar Segundas Patas (Dutch-Book / Hedge / Conversion)
+    # Reserva intocable ($120 USDC = 12%) exclusiva para cerrar Segundas Patas (Dutch-Book / Hedge / Conversion)
     HEDGE_RESERVE_USDC: float = (
         1200.0 if _IS_TOURNAMENT else float(os.getenv("HEDGE_RESERVE_USDC", "120.0"))
     )
@@ -68,59 +69,112 @@ class BotConfig:
     TOURNAMENT_STRATEGY_ENTRY_CAP_USDC: float = 880.0
     TOURNAMENT_STRATEGY_HEDGE_RESERVE_USDC: float = 120.0
 
-    # Tamaño base de orden adaptado a una cuenta de $1,000 USDC ($12 USDC por orden normal)
-    ORDER_SIZE_USDC: float = float(os.getenv("ORDER_SIZE_USDC", "12.0"))
-    # En Modo Torneo mantenemos el tamaño de orden realista de una cuenta de $1,000 USDC (_BANKROLL_SCALE = 1.0)
-    # para no distorsionar los fills con órdenes gigantes irreales, permitiendo evaluar más mercados en paralelo.
+    # Tamaño base de orden adaptado a una cuenta de $1,000 USDC
+    ORDER_SIZE_USDC: float = float(os.getenv("ORDER_SIZE_USDC", "14.0"))
     _BANKROLL_SCALE: float = 1.0 if _IS_TOURNAMENT else max(0.1, TOTAL_BANKROLL_USDC / 1000.0)
 
-    # Tamaño por orden para cada una de las 10 estrategias
-    STRATEGY_ORDER_SIZE_USDC = {
-        "S1_VIGFREE_MAKER": round(18.0 if _IS_TOURNAMENT else 12.0 * _BANKROLL_SCALE, 2),          # hi774c / HomeRunHazard
-        "S2_LIVE_DUTCHBOOK": round(20.0 if _IS_TOURNAMENT else 14.0 * _BANKROLL_SCALE, 2),         # PEYZ-BIGGEST-FAN / RN1
-        "S3_POSTONLY_4LEG_MM": round(22.0 if _IS_TOURNAMENT else 15.0 * _BANKROLL_SCALE, 2),       # calculate10
-        "S4_NEGRISK_ARB": round(18.0 if _IS_TOURNAMENT else 12.0 * _BANKROLL_SCALE, 2),            # BreakTheBank / Nooserac
-        "S5_NEGRISK_CONV_MERGE": round(18.0 if _IS_TOURNAMENT else 11.0 * _BANKROLL_SCALE, 2),     # e46m3
-        "S6_LONGSHOT_SELL_MAKER": round(16.0 if _IS_TOURNAMENT else 10.0 * _BANKROLL_SCALE, 2),    # Bigggggggg
-        "S7_SPREAD_MIDDLING": round(18.0 if _IS_TOURNAMENT else 12.0 * _BANKROLL_SCALE, 2),        # justaluckydude
-        "S8_NICHE_PROPS_CORNERS": round(18.0 if _IS_TOURNAMENT else 12.0 * _BANKROLL_SCALE, 2),    # omnibus-076daa
-        "S9_NCAAF_NFL_DEEP_ARB": round(20.0 if _IS_TOURNAMENT else 14.0 * _BANKROLL_SCALE, 2),     # primm
-        "S10_TENNIS_PENNY_DUST": round(5.0 if _IS_TOURNAMENT else max(2.5, 2.5 * _BANKROLL_SCALE), 2),  # 01258787xy
-    }
-
-    # Cuota máxima de margen de apertura que puede bloquear cada estrategia:
-    # - En TOURNAMENT_10K_EQUAL: Todas las 10 estrategias tienen exactamente $880.00 USDC de apertura (+ $120.00 de Reserva = $1,000.00 c/u)
-    # - En SMART_10_ROTATION   : Cuotas ponderadas que suman $880.00 USDC (+ $120.00 Reserva = $1,000.00 total)
-    STRATEGY_MAX_BUDGET_USDC = (
+    # Tamaño por orden calibrado para las 6 Campeonas sobre $1,000 USDC
+    STRATEGY_ORDER_SIZE_USDC = (
         {
-            "S1_VIGFREE_MAKER": 880.0,
-            "S2_LIVE_DUTCHBOOK": 880.0,
-            "S3_POSTONLY_4LEG_MM": 880.0,
-            "S4_NEGRISK_ARB": 880.0,
-            "S5_NEGRISK_CONV_MERGE": 880.0,
-            "S6_LONGSHOT_SELL_MAKER": 880.0,
-            "S7_SPREAD_MIDDLING": 880.0,
-            "S8_NICHE_PROPS_CORNERS": 880.0,
-            "S9_NCAAF_NFL_DEEP_ARB": 880.0,
-            "S10_TENNIS_PENNY_DUST": 880.0,
+            "S1_VIGFREE_MAKER": round(15.0 * _BANKROLL_SCALE, 2),          # #2 Base ($200 cupo)
+            "S2_LIVE_DUTCHBOOK": round(12.0 * _BANKROLL_SCALE, 2),         # #4 Turbo ($140 cupo)
+            "S3_POSTONLY_4LEG_MM": 0.0,
+            "S4_NEGRISK_ARB": 0.0,
+            "S5_NEGRISK_CONV_MERGE": 0.0,
+            "S6_LONGSHOT_SELL_MAKER": 0.0,
+            "S7_SPREAD_MIDDLING": round(14.0 * _BANKROLL_SCALE, 2),        # #3 Base ($180 cupo)
+            "S8_NICHE_PROPS_CORNERS": round(15.0 * _BANKROLL_SCALE, 2),    # #1 Base ($220 cupo)
+            "S9_NCAAF_NFL_DEEP_ARB": round(12.0 * _BANKROLL_SCALE, 2),     # #5 Turbo ($110 cupo)
+            "S10_TENNIS_PENNY_DUST": round(max(2.5, 2.5 * _BANKROLL_SCALE), 2),  # #6 Micro ($30 cupo)
         }
-        if _IS_TOURNAMENT
+        if _IS_CHAMPIONS_6
         else {
-            "S1_VIGFREE_MAKER": round(90.0 * _BANKROLL_SCALE, 2),
-            "S2_LIVE_DUTCHBOOK": round(100.0 * _BANKROLL_SCALE, 2),
-            "S3_POSTONLY_4LEG_MM": round(120.0 * _BANKROLL_SCALE, 2),
-            "S4_NEGRISK_ARB": round(80.0 * _BANKROLL_SCALE, 2),
-            "S5_NEGRISK_CONV_MERGE": round(130.0 * _BANKROLL_SCALE, 2),
-            "S6_LONGSHOT_SELL_MAKER": round(80.0 * _BANKROLL_SCALE, 2),
-            "S7_SPREAD_MIDDLING": round(90.0 * _BANKROLL_SCALE, 2),
-            "S8_NICHE_PROPS_CORNERS": round(90.0 * _BANKROLL_SCALE, 2),
-            "S9_NCAAF_NFL_DEEP_ARB": round(80.0 * _BANKROLL_SCALE, 2),
-            "S10_TENNIS_PENNY_DUST": round(20.0 * _BANKROLL_SCALE, 2),
+            "S1_VIGFREE_MAKER": round(18.0 if _IS_TOURNAMENT else 12.0 * _BANKROLL_SCALE, 2),
+            "S2_LIVE_DUTCHBOOK": round(20.0 if _IS_TOURNAMENT else 14.0 * _BANKROLL_SCALE, 2),
+            "S3_POSTONLY_4LEG_MM": round(22.0 if _IS_TOURNAMENT else 15.0 * _BANKROLL_SCALE, 2),
+            "S4_NEGRISK_ARB": round(18.0 if _IS_TOURNAMENT else 12.0 * _BANKROLL_SCALE, 2),
+            "S5_NEGRISK_CONV_MERGE": round(18.0 if _IS_TOURNAMENT else 11.0 * _BANKROLL_SCALE, 2),
+            "S6_LONGSHOT_SELL_MAKER": round(16.0 if _IS_TOURNAMENT else 10.0 * _BANKROLL_SCALE, 2),
+            "S7_SPREAD_MIDDLING": round(18.0 if _IS_TOURNAMENT else 12.0 * _BANKROLL_SCALE, 2),
+            "S8_NICHE_PROPS_CORNERS": round(18.0 if _IS_TOURNAMENT else 12.0 * _BANKROLL_SCALE, 2),
+            "S9_NCAAF_NFL_DEEP_ARB": round(20.0 if _IS_TOURNAMENT else 14.0 * _BANKROLL_SCALE, 2),
+            "S10_TENNIS_PENNY_DUST": round(5.0 if _IS_TOURNAMENT else max(2.5, 2.5 * _BANKROLL_SCALE), 2),
         }
     )
 
+    # Cuota máxima de margen de apertura:
+    # - En LIVE_6_CHAMPIONS_1K: Suma exactamente $880.00 USDC (+ $120.00 Reserva Intocable = $1,000.00 USDC)
+    #   S8=$220 | S1=$200 | S7=$180 | S2=$140 | S9=$110 | S10=$30 (S3, S4, S5, S6 = $0 Apagadas)
+    STRATEGY_MAX_BUDGET_USDC = (
+        {
+            "S8_NICHE_PROPS_CORNERS": round(220.0 * _BANKROLL_SCALE, 2),
+            "S1_VIGFREE_MAKER": round(200.0 * _BANKROLL_SCALE, 2),
+            "S7_SPREAD_MIDDLING": round(180.0 * _BANKROLL_SCALE, 2),
+            "S2_LIVE_DUTCHBOOK": round(140.0 * _BANKROLL_SCALE, 2),
+            "S9_NCAAF_NFL_DEEP_ARB": round(110.0 * _BANKROLL_SCALE, 2),
+            "S10_TENNIS_PENNY_DUST": round(30.0 * _BANKROLL_SCALE, 2),
+            "S3_POSTONLY_4LEG_MM": 0.0,
+            "S4_NEGRISK_ARB": 0.0,
+            "S5_NEGRISK_CONV_MERGE": 0.0,
+            "S6_LONGSHOT_SELL_MAKER": 0.0,
+        }
+        if _IS_CHAMPIONS_6
+        else (
+            {
+                "S1_VIGFREE_MAKER": 880.0,
+                "S2_LIVE_DUTCHBOOK": 880.0,
+                "S3_POSTONLY_4LEG_MM": 880.0,
+                "S4_NEGRISK_ARB": 880.0,
+                "S5_NEGRISK_CONV_MERGE": 880.0,
+                "S6_LONGSHOT_SELL_MAKER": 880.0,
+                "S7_SPREAD_MIDDLING": 880.0,
+                "S8_NICHE_PROPS_CORNERS": 880.0,
+                "S9_NCAAF_NFL_DEEP_ARB": 880.0,
+                "S10_TENNIS_PENNY_DUST": 880.0,
+            }
+            if _IS_TOURNAMENT
+            else {
+                "S1_VIGFREE_MAKER": round(90.0 * _BANKROLL_SCALE, 2),
+                "S2_LIVE_DUTCHBOOK": round(100.0 * _BANKROLL_SCALE, 2),
+                "S3_POSTONLY_4LEG_MM": round(120.0 * _BANKROLL_SCALE, 2),
+                "S4_NEGRISK_ARB": round(80.0 * _BANKROLL_SCALE, 2),
+                "S5_NEGRISK_CONV_MERGE": round(130.0 * _BANKROLL_SCALE, 2),
+                "S6_LONGSHOT_SELL_MAKER": round(80.0 * _BANKROLL_SCALE, 2),
+                "S7_SPREAD_MIDDLING": round(90.0 * _BANKROLL_SCALE, 2),
+                "S8_NICHE_PROPS_CORNERS": round(90.0 * _BANKROLL_SCALE, 2),
+                "S9_NCAAF_NFL_DEEP_ARB": round(80.0 * _BANKROLL_SCALE, 2),
+                "S10_TENNIS_PENNY_DUST": round(20.0 * _BANKROLL_SCALE, 2),
+            }
+        )
+    )
+
     # =========================================================================
-    # PARÁMETROS CUANTITATIVOS DE LAS 10 ESTRATEGIAS AUTÓNOMAS (LOTE 1 + LOTE 2)
+    # MOTOR DE FRICCIÓN REALISTA DE PRODUCCIÓN (COLAS FIFO, SLIPPAGE, SPREAD Y GAS)
+    # =========================================================================
+    REALISTIC_FRICTION_ENABLED: bool = os.getenv("REALISTIC_FRICTION_ENABLED", "true").lower() == "true"
+    # Tasa realista de Maker Rebate efectivo (0.045% = 4.5 bps promedio ponderado en deportes)
+    REALISTIC_MAKER_REBATE_RATE: float = float(os.getenv("REALISTIC_MAKER_REBATE_RATE", "0.00045"))
+    # Costo real de Gas en Polygon (POL) por cada fusión on-chain mergePositions (~$0.012 USD)
+    POLYGON_MERGE_GAS_USDC: float = float(os.getenv("POLYGON_MERGE_GAS_USDC", "0.012"))
+    # Probabilidad de llenado en cola FIFO cuando el precio apenas toca nuestro límite exacto (sin atravesarlo):
+    QUEUE_TOUCH_FILL_PROB = {
+        "S8_NICHE_PROPS_CORNERS": 0.78,  # Libros de nicho sin HFT -> alta prioridad de cola
+        "S1_VIGFREE_MAKER": 0.75,        # Pre-partido con horas de anticipación -> alta prioridad
+        "S7_SPREAD_MIDDLING": 0.70,      # Líneas alternativas de spread -> prioridad media-alta
+        "S2_LIVE_DUTCHBOOK": 0.62,       # Partidos en vivo -> competencia moderada en el libro
+        "S9_NCAAF_NFL_DEEP_ARB": 0.60,   # Fútbol americano en vivo -> competencia moderada
+        "S10_TENNIS_PENNY_DUST": 0.35,   # Redes a $0.008 -> cola FIFO competida
+    }
+    # Protección de "Pata Coja" (Legging Stop-Loss / Scratch Exit):
+    # Si tenemos 1 sola pata abierta sin emparejar por más de LEGGING_MAX_UNHEDGED_SEC y el Bid cae más de
+    # LEGGING_STOP_LOSS_DROP_CENTS (o expira el tiempo máximo), cerramos cruzando el Bid (asumiendo Spread + Slippage Taker)
+    LEGGING_MAX_UNHEDGED_SEC: int = int(os.getenv("LEGGING_MAX_UNHEDGED_SEC", "1800"))      # 30 min máx sin cubrir en vivo
+    LEGGING_PREMATCH_UNHEDGED_SEC: int = int(os.getenv("LEGGING_PREMATCH_UNHEDGED_SEC", "5400"))  # 90 min en pre-partido
+    LEGGING_STOP_LOSS_DROP_CENTS: float = float(os.getenv("LEGGING_STOP_LOSS_DROP_CENTS", "0.14"))  # Stop-loss si cae 14c sin cubrir
+    TAKER_EMERGENCY_SLIPPAGE_BPS: float = float(os.getenv("TAKER_EMERGENCY_SLIPPAGE_BPS", "0.005")) # 50 bps slippage + fee al cruzar
+
+    # =========================================================================
+    # PARÁMETROS CUANTITATIVOS DE LAS ESTRATEGIAS (CON S3, S4, S5, S6 APAGADAS EN MODO 6 CAMPEONAS)
     # =========================================================================
 
     # S1: Pre-Match Vig-Free Spreads & Totals (hi774c / HomeRunHazard)
@@ -139,59 +193,65 @@ class BotConfig:
     S2_PRICE_MAX: float = 0.82
     S2_TARGET_DUTCH_BOOK_SUM: float = 0.945
 
-    # S3: 4-Leg Post-Only HFT Spread Harvester (calculate10)
-    S3_ENABLED: bool = os.getenv("S3_ENABLED", "true").lower() == "true"
+    # S3: 4-Leg Post-Only HFT Spread Harvester (APAGADA en LIVE_6_CHAMPIONS_1K por sensibilidad a latencia)
+    S3_ENABLED: bool = os.getenv("S3_ENABLED", "false" if _IS_CHAMPIONS_6 else "true").lower() == "true"
     S3_MIN_VOL_24H: float = 10000.0
     S3_MIN_SPREAD: float = 0.020
     S3_MAX_SPREAD: float = 0.090
     S3_IMBALANCE_CANCEL_RATIO: float = 0.78
 
-    # S4: Anti-Hype & Matriz Negative-Risk (BreakTheBank / Nooserac)
-    S4_ENABLED: bool = os.getenv("S4_ENABLED", "true").lower() == "true"
+    # S4: Anti-Hype & Matriz Negative-Risk (APAGADA en LIVE_6_CHAMPIONS_1K por riesgo direccional)
+    S4_ENABLED: bool = os.getenv("S4_ENABLED", "false" if _IS_CHAMPIONS_6 else "true").lower() == "true"
     S4_MIN_VOL_24H: float = 10000.0
     S4_NEGRISK_MAX_BID_SUM: float = 0.985
 
-    # S5 (NUEVA - Lote 2): Motor NegRisk CONVERSION + MERGE + Bonos Piso (e46m3 - 98.2% Win Intervals)
-    S5_ENABLED: bool = os.getenv("S5_ENABLED", "true").lower() == "true"
+    # S5 (Lote 2): Motor NegRisk CONVERSION + MERGE + Bonos Piso (APAGADA en LIVE_6_CHAMPIONS_1K por baja rotación)
+    S5_ENABLED: bool = os.getenv("S5_ENABLED", "false" if _IS_CHAMPIONS_6 else "true").lower() == "true"
     S5_MIN_VOL_24H: float = 1500.0
     S5_TAIL_NO_MAX_ASK: float = 0.065     # Compra acciones 'No' / Cola baratas para CONVERSION + MERGE
     S5_FLOOR_BOND_MIN_BID: float = 0.955  # Bonos de piso de alta probabilidad (ej. BTC daily floor / Clima)
     S5_FLOOR_BOND_MAX_ASK: float = 0.991
 
-    # S6 (NUEVA - Lote 2): Cosechador Maker en Venta de Longshots vía SPLIT/CONVERSION (Bigggggggg - 80% Win)
-    S6_ENABLED: bool = os.getenv("S6_ENABLED", "true").lower() == "true"
+    # S6 (Lote 2): Cosechador Maker en Venta de Longshots vía SPLIT/CONVERSION (APAGADA en LIVE_6_CHAMPIONS_1K)
+    S6_ENABLED: bool = os.getenv("S6_ENABLED", "false" if _IS_CHAMPIONS_6 else "true").lower() == "true"
     S6_MIN_VOL_24H: float = 2000.0
     S6_LONGSHOT_MIN_PRICE: float = 0.040
     S6_LONGSHOT_MAX_PRICE: float = 0.260  # Rango de lotería retail (mediana de Bigggggggg: $0.17)
 
-    # S7 (NUEVA - Lote 2): Escalera de Hándicaps Alternativos / Spread Middling (justaluckydude)
+    # S7 (Lote 2): Escalera de Hándicaps Alternativos / Spread Middling (justaluckydude)
     S7_ENABLED: bool = os.getenv("S7_ENABLED", "true").lower() == "true"
     S7_MIN_VOL_24H: float = 300.0
     S7_TARGET_MIDDLE_SUM: float = 0.915   # Costo combinado objetivo entre dos líneas de spread del mismo juego
 
-    # S8 (NUEVA - Lote 2): Props de Nicho, Total de Córners (O/U Corners) y Map Handicaps (omnibus-076daa)
+    # S8 (Lote 2): Props de Nicho, Total de Córners (O/U Corners) y Map Handicaps (omnibus-076daa)
     S8_ENABLED: bool = os.getenv("S8_ENABLED", "true").lower() == "true"
     S8_MIN_VOL_24H: float = 150.0
     S8_TARGET_COMBINED_COST: float = 0.965
 
-    # S9 (NUEVA - Lote 2): Dutch-Book Profundo 0% Fee en Fútbol Americano NCAAF/NFL (primm)
+    # S9 (Lote 2): Dutch-Book Profundo 0% Fee en Fútbol Americano NCAAF/NFL (primm)
     S9_ENABLED: bool = os.getenv("S9_ENABLED", "true").lower() == "true"
     S9_MIN_VOL_24H: float = 1000.0
     S9_DEEP_ARB_SUM_TARGET: float = 0.860  # Apunta a cierres profundos (0.72 - 0.86) durante volatilidad
 
-    # S10 (NUEVA - Lote 2): Redes de Arrastre ($0.002-$0.015) y Dual-Outcome en Tenis (01258787xy...)
+    # S10 (Lote 2): Redes de Arrastre ($0.002-$0.015) y Dual-Outcome en Tenis (01258787xy...)
     S10_ENABLED: bool = os.getenv("S10_ENABLED", "true").lower() == "true"
     S10_MIN_VOL_24H: float = 50.0
     S10_STINK_BID_PRICE: float = 0.008     # Red de arrastre ultra-barata para atrapar ventas de pánico en Tenis
+    S11_ENABLED: bool = False
+    S12_ENABLED: bool = False
+    S13_ENABLED: bool = False
+    S14_ENABLED: bool = False
+    S15_ENABLED: bool = False
+    S16_ENABLED: bool = False
 
     # =========================================================================
     # PARÁMETROS DE OPERACIÓN 24/7 MULTI-DÍA (AUTO-ROTACIÓN Y RECICLAJE)
     # =========================================================================
     # Intervalo de re-escaneo autónomo de Gamma API para incorporar nuevos partidos y purgar cerrados (segundos)
     MARKET_SCAN_INTERVAL_SEC: int = int(os.getenv("MARKET_SCAN_INTERVAL_SEC", "180"))
-    # En Modo Torneo permitimos hasta 6 mercados simultáneos por estrategia para desplegar sus $1,000 USDC
+    # En Modo 6 Campeonas permitimos hasta 4 mercados simultáneos por estrategia (21-24 mercados activos)
     MAX_MARKETS_PER_STRATEGY: int = int(
-        os.getenv("MAX_MARKETS_PER_STRATEGY", "6" if _IS_TOURNAMENT else "3")
+        os.getenv("MAX_MARKETS_PER_STRATEGY", "6" if _IS_TOURNAMENT else "4")
     )
     # Tiempo máximo (segundos) que una orden de apertura sin llenarse puede estar lejos del precio antes de recotizar
     STALE_ENTRY_ORDER_TIMEOUT_SEC: int = int(os.getenv("STALE_ENTRY_ORDER_TIMEOUT_SEC", "900"))

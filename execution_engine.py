@@ -4,6 +4,7 @@ Motor de Ejecución Dual + Gestor Dinámico de Margen ($1,000 USDC) + Auto-Merge
 2. Protege una Reserva Intocable de Cobertura ($120 USDC) para que NUNCA falte margen al cerrar la Pata B de un arbitraje.
 3. Ejecuta automáticamente MERGE y CONVERSION (estilo e46m3 y Bigggggggg) para liberar el capital de vuelta a USDC en segundos.
 """
+import random
 import time
 import uuid
 from dataclasses import dataclass, field
@@ -50,8 +51,12 @@ class ConditionInventory:
     realized_spread_pnl: float = 0.0
     realized_merge_conv_pnl: float = 0.0
     maker_rebates_earned: float = 0.0
+    friction_costs_usdc: float = 0.0
     merge_conv_count: int = 0
     fills_count: int = 0
+    queue_missed_count: int = 0
+    legging_exits_count: int = 0
+    unhedged_since: Optional[float] = None
 
     @property
     def vwap_a(self) -> float:
@@ -79,6 +84,9 @@ class ExecutionEngine:
         self.open_orders: Dict[str, OrderRecord] = {}
         self.filled_orders: List[OrderRecord] = []
         self.total_fills_count: int = 0
+        self.total_queue_missed_count: int = 0
+        self.total_legging_exits_count: int = 0
+        self.total_friction_costs_usdc: float = 0.0
         self.inventories: Dict[str, ConditionInventory] = {}
         self.peak_strategy_committed_usdc: Dict[str, float] = {}
         self.total_recycled_by_strategy: Dict[str, float] = {}
@@ -113,7 +121,7 @@ class ExecutionEngine:
             self.clob_client.set_api_creds(self.clob_client.create_or_derive_api_creds())
 
     # =========================================================================
-    # GESTOR DINÁMICO DE MARGEN ($1,000 REAL O TORNEO 10 x $1,000 AISLADOS)
+    # GESTOR DINÁMICO DE MARGEN ($1,000 REAL / 6 CAMPEONAS O $10,000 TORNEO)
     # =========================================================================
     def get_open_order_margin_usdc(self, strategy_tag: Optional[str] = None) -> float:
         return round(
@@ -151,16 +159,6 @@ class ExecutionEngine:
         return round(max(0.0, cap - self.get_total_committed_usdc()), 2)
 
     def can_allocate_margin(self, strategy_tag: str, usdc_amount: float, is_hedge_leg: bool = False) -> bool:
-        """
-        Verifica si hay margen libre:
-        1. En modo TOURNAMENT_10K_EQUAL:
-           - Cada una de las 10 estrategias tiene su propia sub-cuenta aislada de $1,000.00 USDC:
-             * Apertura normal (is_hedge_leg=False): máximo $880.00 USDC por estrategia.
-             * Cobertura / Segunda Pata (is_hedge_leg=True): hasta $1,000.00 USDC ($880 + $120 de reserva propia).
-        2. En modo SMART_10_ROTATION / CORE_CONCENTRATED ($1,000 USDC totales):
-           - Apertura normal respeta STRATEGY_MAX_BUDGET_USDC y el tope global de $880 USDC.
-           - Cobertura (is_hedge_leg=True) tiene acceso a los $120 USDC de reserva global ($1,000 total).
-        """
         strat_committed = self.get_strategy_committed_usdc(strategy_tag)
 
         if self.cfg.PORTFOLIO_MODE == "TOURNAMENT_10K_EQUAL":
@@ -172,6 +170,8 @@ class ExecutionEngine:
             return (self.get_total_committed_usdc() + usdc_amount) <= self.cfg.TOTAL_BANKROLL_USDC
 
         strat_cap = self.cfg.STRATEGY_MAX_BUDGET_USDC.get(strategy_tag, 80.0)
+        if strat_cap <= 0.0:
+            return False
         if self.cfg.PORTFOLIO_MODE == "CORE_CONCENTRATED":
             strat_cap *= 1.8
 
@@ -218,9 +218,10 @@ class ExecutionEngine:
     ) -> Optional[OrderRecord]:
         if usdc_amount is None:
             usdc_amount = self.cfg.STRATEGY_ORDER_SIZE_USDC.get(strategy_tag, self.cfg.ORDER_SIZE_USDC)
+        if usdc_amount <= 0:
+            return None
 
         price = round(price, 3)
-        # Permitimos órdenes desde $0.002 para S10_TENNIS_PENNY_DUST
         min_allowed_px = 0.002 if strategy_tag == "S10_TENNIS_PENNY_DUST" else 0.005
         if price < min_allowed_px or price >= 0.996:
             return None
@@ -290,7 +291,6 @@ class ExecutionEngine:
             del self.open_orders[oid]
 
     def cancel_entry_orders_for_condition(self, condition_id: str, include_hedge: bool = False) -> int:
-        """Cancela órdenes abiertas de un condition_id (protegiendo órdenes Hedge salvo que el mercado haya cerrado)."""
         to_cancel = [
             oid for oid, o in self.open_orders.items()
             if o.condition_id == condition_id
@@ -308,10 +308,6 @@ class ExecutionEngine:
         return len(to_cancel)
 
     def prune_stale_entry_orders(self, live_book_state: Dict[str, Dict[str, float]], now: float) -> int:
-        """
-        Recicla órdenes de apertura (no-hedge) que llevan más de STALE_ENTRY_ORDER_TIMEOUT_SEC sin ejecutarse
-        y cuyo precio quedó alejado más de REQUOTE_PRICE_DRIFT_THRESHOLD del mejor Bid actual (salvo S10_TENNIS_PENNY_DUST).
-        """
         cancelled = 0
         for oid, o in list(self.open_orders.items()):
             if o.status != "OPEN" or o.is_hedge_leg or o.strategy_tag == "S10_TENNIS_PENNY_DUST":
@@ -333,6 +329,101 @@ class ExecutionEngine:
                     cancelled += 1
         return cancelled
 
+    def prune_unhedged_legging_risk(self, live_book_state: Dict[str, Dict[str, float]], now: float) -> int:
+        """
+        SIMULACIÓN Y GESTIÓN REALISTA DE "PATA COJA" (LEGGING RISK + SPREAD + SLIPPAGE):
+        Si una estrategia compró la Pata A pero el partido se fue en contra (o pasó el tiempo máximo sin que se llene la Pata B):
+        - Liquidamos el excedente no emparejado al mejor Bid actual menos el Slippage/Fee de salida Taker.
+        - Liberamos el margen de vuelta a la cuenta y registramos la pérdida/costo de spread en realized_spread_pnl y friction_costs_usdc.
+        """
+        if not self.cfg.REALISTIC_FRICTION_ENABLED:
+            return 0
+
+        exits = 0
+        for cid, inv in list(self.inventories.items()):
+            if inv.strategy_tag == "S10_TENNIS_PENNY_DUST":
+                continue
+            unhedged_a = round(inv.shares_a - inv.shares_b, 4)
+            unhedged_b = round(inv.shares_b - inv.shares_a, 4)
+            if unhedged_a < 1.0 and unhedged_b < 1.0:
+                inv.unhedged_since = None
+                continue
+
+            if inv.unhedged_since is None:
+                inv.unhedged_since = now
+                continue
+
+            elapsed_unhedged = now - inv.unhedged_since
+            max_wait = (
+                self.cfg.LEGGING_PREMATCH_UNHEDGED_SEC
+                if inv.strategy_tag in ("S1_VIGFREE_MAKER", "S7_SPREAD_MIDDLING")
+                else self.cfg.LEGGING_MAX_UNHEDGED_SEC
+            )
+
+            if unhedged_a >= 1.0:
+                st = live_book_state.get(inv.token_a, {})
+                curr_bid = st.get("bid", 0.0)
+                if curr_bid <= 0:
+                    continue
+                price_drop = inv.vwap_a - curr_bid
+                if elapsed_unhedged >= max_wait or price_drop >= self.cfg.LEGGING_STOP_LOSS_DROP_CENTS:
+                    slippage_px = round(max(0.002, curr_bid * self.cfg.TAKER_EMERGENCY_SLIPPAGE_BPS), 4)
+                    exit_px = round(max(0.005, curr_bid - slippage_px), 4)
+                    cost_basis = round(unhedged_a * inv.vwap_a, 4)
+                    proceeds = round(unhedged_a * exit_px, 4)
+                    spread_slip_loss = round(proceeds - cost_basis, 4)
+                    friction_hit = round(max(0.0, cost_basis - proceeds), 4)
+
+                    inv.realized_spread_pnl = round(inv.realized_spread_pnl + spread_slip_loss, 4)
+                    inv.friction_costs_usdc = round(inv.friction_costs_usdc + friction_hit, 4)
+                    self.total_friction_costs_usdc = round(self.total_friction_costs_usdc + friction_hit, 4)
+                    inv.shares_a = round(max(0.0, inv.shares_a - unhedged_a), 4)
+                    inv.cost_usdc_a = round(inv.shares_a * inv.vwap_a, 4)
+                    inv.unhedged_since = None
+                    inv.legging_exits_count += 1
+                    self.total_legging_exits_count += 1
+                    self.total_exposure_usdc = max(0.0, self.total_exposure_usdc - cost_basis)
+                    self.cancel_entry_orders_for_condition(cid, include_hedge=True)
+                    exits += 1
+                    print(
+                        f"  🛡️ [LEGGING SCRATCH/STOP {inv.strategy_tag}] Cerrada pata suelta ({unhedged_a:.1f} sh '{inv.outcome_a}') "
+                        f"en '{inv.question[:34]}' @ Bid ${exit_px:.3f} (VWAP ${inv.vwap_a:.3f}) -> "
+                        f"Costo Spread/Slippage: ${spread_slip_loss:+.3f} USDC | Margen liberado"
+                    )
+
+            elif unhedged_b >= 1.0:
+                st = live_book_state.get(inv.token_b, {})
+                curr_bid = st.get("bid", 0.0)
+                if curr_bid <= 0:
+                    continue
+                price_drop = inv.vwap_b - curr_bid
+                if elapsed_unhedged >= max_wait or price_drop >= self.cfg.LEGGING_STOP_LOSS_DROP_CENTS:
+                    slippage_px = round(max(0.002, curr_bid * self.cfg.TAKER_EMERGENCY_SLIPPAGE_BPS), 4)
+                    exit_px = round(max(0.005, curr_bid - slippage_px), 4)
+                    cost_basis = round(unhedged_b * inv.vwap_b, 4)
+                    proceeds = round(unhedged_b * exit_px, 4)
+                    spread_slip_loss = round(proceeds - cost_basis, 4)
+                    friction_hit = round(max(0.0, cost_basis - proceeds), 4)
+
+                    inv.realized_spread_pnl = round(inv.realized_spread_pnl + spread_slip_loss, 4)
+                    inv.friction_costs_usdc = round(inv.friction_costs_usdc + friction_hit, 4)
+                    self.total_friction_costs_usdc = round(self.total_friction_costs_usdc + friction_hit, 4)
+                    inv.shares_b = round(max(0.0, inv.shares_b - unhedged_b), 4)
+                    inv.cost_usdc_b = round(inv.shares_b * inv.vwap_b, 4)
+                    inv.unhedged_since = None
+                    inv.legging_exits_count += 1
+                    self.total_legging_exits_count += 1
+                    self.total_exposure_usdc = max(0.0, self.total_exposure_usdc - cost_basis)
+                    self.cancel_entry_orders_for_condition(cid, include_hedge=True)
+                    exits += 1
+                    print(
+                        f"  🛡️ [LEGGING SCRATCH/STOP {inv.strategy_tag}] Cerrada pata suelta ({unhedged_b:.1f} sh '{inv.outcome_b}') "
+                        f"en '{inv.question[:34]}' @ Bid ${exit_px:.3f} (VWAP ${inv.vwap_b:.3f}) -> "
+                        f"Costo Spread/Slippage: ${spread_slip_loss:+.3f} USDC | Margen liberado"
+                    )
+
+        return exits
+
     def on_market_tick_simulate_fills(
         self, token_id: str, live_best_bid: float, live_best_ask: float, last_trade_price: Optional[float] = None
     ) -> List[OrderRecord]:
@@ -341,12 +432,36 @@ class ExecutionEngine:
             if order.token_id != token_id or order.status != "OPEN":
                 continue
 
-            filled = False
+            crossed_through = False
+            touched_exact = False
+
             if order.side == "BUY":
-                if (0 < live_best_ask <= order.price) or (last_trade_price is not None and 0 < last_trade_price <= order.price):
-                    filled = True
+                if (0 < live_best_ask < order.price) or (last_trade_price is not None and 0 < last_trade_price < order.price):
+                    crossed_through = True
+                elif (live_best_ask == order.price) or (last_trade_price is not None and last_trade_price == order.price):
+                    touched_exact = True
             elif order.side == "SELL":
-                if (live_best_bid >= order.price) or (last_trade_price is not None and last_trade_price >= order.price):
+                if (live_best_bid > order.price) or (last_trade_price is not None and last_trade_price > order.price):
+                    crossed_through = True
+                elif (live_best_bid == order.price) or (last_trade_price is not None and last_trade_price == order.price):
+                    touched_exact = True
+
+            filled = False
+            if crossed_through:
+                filled = True
+            elif touched_exact:
+                if self.cfg.REALISTIC_FRICTION_ENABLED:
+                    # Simulación de Prioridad de Cola FIFO: cuando el precio solo toca nuestro límite sin atravesarlo,
+                    # aplicamos la probabilidad real de estar adelante en la cola según la estrategia.
+                    q_prob = self.cfg.QUEUE_TOUCH_FILL_PROB.get(order.strategy_tag, 0.65)
+                    if random.random() <= q_prob:
+                        filled = True
+                    else:
+                        inv = self.inventories.get(order.condition_id)
+                        if inv:
+                            inv.queue_missed_count += 1
+                        self.total_queue_missed_count += 1
+                else:
                     filled = True
 
             if filled:
@@ -368,7 +483,12 @@ class ExecutionEngine:
         inv.fills_count += 1
         self.total_fills_count += 1
         usdc_val = round(order.price * order.size_shares, 4)
-        rebate = round(usdc_val * 0.0015, 4) if order.post_only else 0.0
+        rebate_rate = (
+            self.cfg.REALISTIC_MAKER_REBATE_RATE
+            if self.cfg.REALISTIC_FRICTION_ENABLED
+            else 0.0015
+        )
+        rebate = round(usdc_val * rebate_rate, 4) if order.post_only else 0.0
         inv.maker_rebates_earned += rebate
 
         if order.side == "BUY":
@@ -394,16 +514,21 @@ class ExecutionEngine:
                 inv.shares_b = max(0.0, inv.shares_b - order.size_shares)
                 inv.cost_usdc_b = round(inv.shares_b * avg_cost, 4)
 
-        # AUTO-RECICLAJE DE MARGEN (CONVERSION + MERGE ON-CHAIN ESTILO e46m3):
-        # Si tenemos acciones emparejadas (Outcome A + Outcome B) con ganancia bloqueada,
-        # ejecutamos MERGE inmediato a $1.00 USDC para liberar el colateral sin esperar al final del partido.
+        # Actualizar reloj de exposición de pata suelta (unhedged_since)
+        if abs(inv.shares_a - inv.shares_b) >= 1.0:
+            if inv.unhedged_since is None:
+                inv.unhedged_since = time.time()
+        else:
+            inv.unhedged_since = None
+
+        # AUTO-RECICLAJE DE MARGEN (CONVERSION + MERGE ON-CHAIN):
         if inv.matched_dutch_book_shares >= 5.0 and (inv.vwap_a + inv.vwap_b) < 1.0:
             self.execute_instant_merge_or_conversion(inv)
 
     def execute_instant_merge_or_conversion(self, inv: ConditionInventory):
         """
         Fusiona automáticamente (MERGE / CONVERSION) los pares complementarios (1 Yes + 1 No = $1.00 USDC)
-        liberando de inmediato el capital de vuelta al pool de $1,000 USDC.
+        descontando el costo real de Gas en Polygon (POLYGON_MERGE_GAS_USDC) y liberando el capital al instante.
         """
         matched = inv.matched_dutch_book_shares
         if matched <= 0:
@@ -412,10 +537,10 @@ class ExecutionEngine:
         vwap_b = inv.vwap_b
         combined_cost = matched * (vwap_a + vwap_b)
         payout_usdc = matched * 1.00
-        net_profit = round(payout_usdc - combined_cost, 4)
+        gas_fee_usdc = self.cfg.POLYGON_MERGE_GAS_USDC if self.cfg.REALISTIC_FRICTION_ENABLED else 0.0
+        net_profit = round(payout_usdc - combined_cost - gas_fee_usdc, 4)
 
         if self.cfg.LIVE_TRADING and self.cfg.PRIVATE_KEY:
-            # Llamada on-chain a ConditionalTokens.mergePositions / NegRiskAdapter.convertPositions
             try:
                 from web3 import Web3
                 w3 = Web3(Web3.HTTPProvider(self.cfg.POLYGON_RPC_URL))
@@ -454,12 +579,15 @@ class ExecutionEngine:
             except Exception as e:
                 print(f"  [ON-CHAIN MERGE INFO] {e}")
 
-        # Actualizamos la contabilidad de inventario liberando el margen de inmediato
         inv.shares_a = round(max(0.0, inv.shares_a - matched), 4)
         inv.shares_b = round(max(0.0, inv.shares_b - matched), 4)
         inv.cost_usdc_a = round(inv.shares_a * vwap_a, 4)
         inv.cost_usdc_b = round(inv.shares_b * vwap_b, 4)
+        if abs(inv.shares_a - inv.shares_b) < 1.0:
+            inv.unhedged_since = None
         inv.realized_merge_conv_pnl += net_profit
+        inv.friction_costs_usdc = round(inv.friction_costs_usdc + gas_fee_usdc, 4)
+        self.total_friction_costs_usdc = round(self.total_friction_costs_usdc + gas_fee_usdc, 4)
         inv.merge_conv_count += 1
         self.total_exposure_usdc = max(0.0, self.total_exposure_usdc - combined_cost)
         self.total_recycled_usdc += round(payout_usdc, 2)
@@ -468,6 +596,6 @@ class ExecutionEngine:
         )
         self.onchain_ops_count += 1
         print(
-            f"  ♻️ [AUTO-MERGE/CONVERSION {inv.strategy_tag}] Fusionadas {matched:.1f} acciones en '{inv.question[:38]}' "
-            f"-> Liberados ${payout_usdc:.2f} USDC al instante (Ganancia Neta: ${net_profit:+.3f} USDC)"
+            f"  ♻️ [AUTO-MERGE/CONVERSION {inv.strategy_tag}] Fusionadas {matched:.1f} acciones en '{inv.question[:36]}' "
+            f"-> Liberados ${payout_usdc:.2f} USDC (Ganancia Neta tras Gas -${gas_fee_usdc:.3f}: ${net_profit:+.3f} USDC)"
         )
