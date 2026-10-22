@@ -1,16 +1,22 @@
 import os
 
 def _load_dotenv_fallback():
-    """Carga variables de .env sin depender obligatoriamente de python-dotenv."""
+    """Carga variables de .env asegurando sobreescritura de valores vacíos."""
     env_path = os.path.join(os.path.dirname(__file__), ".env")
     if os.path.exists(env_path):
+        try:
+            from dotenv import load_dotenv
+            load_dotenv(env_path, override=True)
+            return
+        except ImportError:
+            pass
         with open(env_path, "r", encoding="utf-8") as f:
             for line in f:
                 line = line.strip()
                 if not line or line.startswith("#") or "=" not in line:
                     continue
                 k, v = line.split("=", 1)
-                os.environ.setdefault(k.strip(), v.strip())
+                os.environ[k.strip()] = v.strip()
 
 _load_dotenv_fallback()
 

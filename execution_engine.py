@@ -123,7 +123,10 @@ class ExecutionEngine:
             funder=self.cfg.FUNDER_ADDRESS or None,
         )
         if not creds:
-            self.clob_client.set_api_creds(self.clob_client.create_or_derive_api_creds())
+            if hasattr(self.clob_client, "create_or_derive_api_key"):
+                self.clob_client.set_api_creds(self.clob_client.create_or_derive_api_key())
+            elif hasattr(self.clob_client, "create_or_derive_api_creds"):
+                self.clob_client.set_api_creds(self.clob_client.create_or_derive_api_creds())
 
     # =========================================================================
     # GESTOR DINÁMICO DE MARGEN ($1,000 REAL / 6 CAMPEONAS O $10,000 TORNEO)
