@@ -100,8 +100,12 @@ class ExecutionEngine:
             self._init_live_clob_client()
 
     def _init_live_clob_client(self):
-        from py_clob_client.client import ClobClient
-        from py_clob_client.clob_types import ApiCreds
+        try:
+            from py_clob_client_v2.client import ClobClient
+            from py_clob_client_v2.clob_types import ApiCreds
+        except ImportError:
+            from py_clob_client.client import ClobClient
+            from py_clob_client.clob_types import ApiCreds
 
         creds = None
         if self.cfg.POLY_API_KEY and self.cfg.POLY_API_SECRET and self.cfg.POLY_API_PASSPHRASE:
@@ -295,8 +299,12 @@ class ExecutionEngine:
 
         if self.cfg.LIVE_TRADING and self.clob_client:
             try:
-                from py_clob_client.clob_types import OrderArgs, OrderType
-                from py_clob_client.order_builder.constants import BUY, SELL
+                try:
+                    from py_clob_client_v2.clob_types import OrderArgs, OrderType
+                    from py_clob_client_v2.order_builder.constants import BUY, SELL
+                except ImportError:
+                    from py_clob_client.clob_types import OrderArgs, OrderType
+                    from py_clob_client.order_builder.constants import BUY, SELL
 
                 clob_side = BUY if side == "BUY" else SELL
                 signed_order = self.clob_client.create_order(
