@@ -128,6 +128,18 @@ class ExecutionEngine:
             elif hasattr(self.clob_client, "create_or_derive_api_creds"):
                 self.clob_client.set_api_creds(self.clob_client.create_or_derive_api_creds())
 
+    def _cancel_live_order(self, order_id: str):
+        """Cancela una orden individual en el CLOB en vivo con compatibilidad V1 y V2."""
+        if not self.cfg.LIVE_TRADING or not self.clob_client or not order_id:
+            return
+        try:
+            if hasattr(self.clob_client, "cancel_orders"):
+                self.clob_client.cancel_orders([order_id])
+            elif hasattr(self.clob_client, "cancel"):
+                self.clob_client.cancel(order_id)
+        except Exception:
+            pass
+
     # =========================================================================
     # GESTOR DINÁMICO DE MARGEN ($1,000 REAL / 6 CAMPEONAS O $10,000 TORNEO)
     # =========================================================================
@@ -341,11 +353,7 @@ class ExecutionEngine:
             if o.token_id == token_id and o.status == "OPEN"
         ]
         for oid in to_cancel:
-            if self.cfg.LIVE_TRADING and self.clob_client:
-                try:
-                    self.clob_client.cancel(oid)
-                except Exception:
-                    pass
+            self._cancel_live_order(oid)
             self.open_orders[oid].status = "CANCELLED"
             del self.open_orders[oid]
 
@@ -357,11 +365,7 @@ class ExecutionEngine:
             and (include_hedge or not o.is_hedge_leg)
         ]
         for oid in to_cancel:
-            if self.cfg.LIVE_TRADING and self.clob_client:
-                try:
-                    self.clob_client.cancel(oid)
-                except Exception:
-                    pass
+            self._cancel_live_order(oid)
             self.open_orders[oid].status = "CANCELLED"
             del self.open_orders[oid]
         return len(to_cancel)
@@ -378,11 +382,7 @@ class ExecutionEngine:
             if st and st.get("bid", 0.0) > 0:
                 drift = abs(st["bid"] - o.price)
                 if drift >= self.cfg.REQUOTE_PRICE_DRIFT_THRESHOLD:
-                    if self.cfg.LIVE_TRADING and self.clob_client:
-                        try:
-                            self.clob_client.cancel(oid)
-                        except Exception:
-                            pass
+                    self._cancel_live_order(oid)
                     o.status = "CANCELLED"
                     del self.open_orders[oid]
                     cancelled += 1
