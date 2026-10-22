@@ -284,6 +284,11 @@ async def run_bot(max_runtime_seconds: int = 0):
 
                 while True:
                     now = time.time()
+                    if engine.check_circuit_breaker():
+                        save_and_print_strategy_scorecard(engine, cfg, ws_ticks, now - start_time, rotation_cycles)
+                        print("🛑 [KILL-SWITCH] Proceso finalizado por activación de Circuit Breaker.")
+                        return
+
                     if max_runtime_seconds > 0 and (now - start_time) >= max_runtime_seconds:
                         save_and_print_strategy_scorecard(engine, cfg, ws_ticks, now - start_time, rotation_cycles)
                         return

@@ -181,6 +181,10 @@ class BotConfig:
     )
 
     # =========================================================================
+    # CIRCUIT BREAKER / HARD STOP-LOSS GLOBAL A NIVEL PORTAFOLIO
+    CIRCUIT_BREAKER_ENABLED: bool = os.getenv("CIRCUIT_BREAKER_ENABLED", "true").lower() == "true"
+    GLOBAL_STOP_LOSS_USDC: float = float(os.getenv("GLOBAL_STOP_LOSS_USDC", "45.0"))  # Stop loss global (si la pérdida acumulada supera este monto en USDC, detiene el bot y cancela todo)
+
     # MOTOR DE FRICCIÓN REALISTA DE PRODUCCIÓN (COLAS FIFO, SLIPPAGE, SPREAD Y GAS)
     # =========================================================================
     REALISTIC_FRICTION_ENABLED: bool = os.getenv("REALISTIC_FRICTION_ENABLED", "true").lower() == "true"

@@ -93,6 +93,7 @@ class ExecutionEngine:
         self.total_exposure_usdc: float = 0.0
         self.total_recycled_usdc: float = 0.0
         self.onchain_ops_count: int = 0
+        self.circuit_breaker_triggered: bool = False
         self.clob_client = None
 
         if self.cfg.LIVE_TRADING:
@@ -158,6 +159,50 @@ class ExecutionEngine:
         cap = self.cfg.TOTAL_BANKROLL_USDC if include_hedge_reserve else self.cfg.MAX_TOTAL_EXPOSURE_USDC
         return round(max(0.0, cap - self.get_total_committed_usdc()), 2)
 
+    def get_total_net_pnl_usdc(self) -> float:
+        """Calcula el PnL neto real acumulado (Arbitraje + Merges + Spreads + Rebates - Fricción)."""
+        total_locked_arb = sum(inv.locked_dutch_book_profit for inv in self.inventories.values())
+        total_merge_pnl = sum(inv.realized_merge_conv_pnl for inv in self.inventories.values())
+        total_spread_pnl = sum(inv.realized_spread_pnl for inv in self.inventories.values())
+        total_rebates = sum(inv.maker_rebates_earned for inv in self.inventories.values())
+        return round(total_locked_arb + total_merge_pnl + total_spread_pnl + total_rebates - self.total_friction_costs_usdc, 4)
+
+    def check_circuit_breaker(self) -> bool:
+        """Verifica si las pérdidas acumuladas superan el Stop Loss global de la cuenta."""
+        if not self.cfg.CIRCUIT_BREAKER_ENABLED:
+            return False
+        if self.circuit_breaker_triggered:
+            return True
+        current_pnl = self.get_total_net_pnl_usdc()
+        max_allowed_loss = abs(self.cfg.GLOBAL_STOP_LOSS_USDC)
+        if current_pnl <= -max_allowed_loss:
+            self.circuit_breaker_triggered = True
+            self.trigger_circuit_breaker(current_pnl)
+            return True
+        return False
+
+    def trigger_circuit_breaker(self, current_pnl: float):
+        """Ejecuta el Kill-Switch de emergencia: cancela órdenes en CLOB y frena el bot."""
+        max_allowed_loss = abs(self.cfg.GLOBAL_STOP_LOSS_USDC)
+        print("\n" + "=" * 108)
+        print("  🛑🛑🛑 [CIRCUIT BREAKER ACTIVADO - KILL-SWITCH DE EMERGENCIA EN VIVO] 🛑🛑🛑")
+        print(f"  Pérdida acumulada: ${current_pnl:+.4f} USDC | Límite máximo de pérdida permitido: -${max_allowed_loss:.2f} USDC")
+        print("  Acciones de protección ejecutadas de inmediato:")
+        if self.cfg.LIVE_TRADING and self.clob_client:
+            try:
+                print("  -> Cancelando TODAS las órdenes vivas en Polymarket CLOB...")
+                self.clob_client.cancel_all()
+                print("  ✅ Todas las órdenes en Polymarket han sido canceladas con éxito.")
+            except Exception as e:
+                print(f"  ⚠️ Error al cancelar órdenes en Polymarket: {e}")
+        else:
+            print("  -> Cancelando todas las órdenes abiertas en el libro de órdenes...")
+            self.open_orders.clear()
+            print("  ✅ Todas las órdenes abiertas han sido canceladas.")
+        print("  -> Nuevas aperturas BLOQUEADAS de forma permanente.")
+        print("  -> DETENIENDO EL BOT PARA PROTEGER EL 100% DEL CAPITAL RESTANTE.")
+        print("=" * 108 + "\n")
+
     def can_allocate_margin(self, strategy_tag: str, usdc_amount: float, is_hedge_leg: bool = False) -> bool:
         strat_committed = self.get_strategy_committed_usdc(strategy_tag)
 
@@ -216,6 +261,9 @@ class ExecutionEngine:
         best_ask: float = 1.0,
         is_hedge_leg: bool = False,
     ) -> Optional[OrderRecord]:
+        if self.circuit_breaker_triggered or self.check_circuit_breaker():
+            return None
+
         if usdc_amount is None:
             usdc_amount = self.cfg.STRATEGY_ORDER_SIZE_USDC.get(strategy_tag, self.cfg.ORDER_SIZE_USDC)
         if usdc_amount <= 0:
