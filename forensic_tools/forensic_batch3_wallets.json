@@ -1,0 +1,2437 @@
+[
+  {
+    "name": "ndb1",
+    "wallet": "0xfea31bc088000ff909be1dfd8d0e3f2c7ef2d227",
+    "economic_pnl": 3654111.46,
+    "realized_market_pnl": 3064191.0,
+    "realized_combo_pnl": 0.0,
+    "pnl_7d_growth": 48384.27,
+    "win_interval_pct": 55.4,
+    "max_dd_7d": 178084.34,
+    "volume_usdc": 79832026.7,
+    "trade_count_fills": 2912,
+    "maker_rebate": 92142.62,
+    "taker_rebate": 19589.2,
+    "reward_income": 580560.65,
+    "yield_income": 28706.58,
+    "fees_paid": -131078.6,
+    "activity_types": {
+      "TRADE": 475,
+      "REDEEM": 12,
+      "MAKER_REBATE": 3,
+      "REWARD": 6,
+      "YIELD": 3,
+      "MERGE": 1
+    },
+    "trade_sides": {
+      "BUY": 406,
+      "SELL": 69
+    },
+    "avg_price": 0.714,
+    "median_price": 0.76,
+    "avg_usdc": 2668.04,
+    "median_usdc": 20.3,
+    "categories_by_count": {
+      "Politics & Elections": 216,
+      "Other / General": 178,
+      "US Sports: Spreads": 54,
+      "Esports": 9
+    },
+    "categories_by_usdc": {
+      "Politics & Elections": 846140.0,
+      "Other / General": 223968.0,
+      "Sports: Totals / Props": 114378.0,
+      "US Sports: Spreads": 79731.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 24.1,
+    "med_delta_s": 44.0,
+    "top_open": [
+      {
+        "title": "2026 Balance of Power: R Senate, R House",
+        "outcome": "No",
+        "avg_price": 0.91,
+        "cur_price": 0.915,
+        "val": 597386.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Will the Democratic Party control the House after the 2026 Midterm elections?",
+        "outcome": "Yes",
+        "avg_price": 0.898,
+        "cur_price": 0.915,
+        "val": 425687.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Will the Republican Party control the House after the 2026 Midterm elections?",
+        "outcome": "No",
+        "avg_price": 0.905,
+        "cur_price": 0.915,
+        "val": 330658.0,
+        "fee": 60.14
+      },
+      {
+        "title": "Will Manchester City win the 2026-27 English Premier League (EPL) Championship?",
+        "outcome": "No",
+        "avg_price": 0.707,
+        "cur_price": 0.855,
+        "val": 319696.0,
+        "fee": 0.0
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "Will Alexander Zverev win the 2026 Men's US Open?",
+        "outcome": "Yes",
+        "avg_price": 0.49,
+        "pnl": 1051093.0,
+        "fee": 4.12
+      },
+      {
+        "title": "Will PSG win the 2025\u201326 Champions League?",
+        "outcome": "Yes",
+        "avg_price": 0.025,
+        "pnl": 699407.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Mexico vs. England: Team to Advance",
+        "outcome": "England",
+        "avg_price": 0.518,
+        "pnl": 550176.0,
+        "fee": 8566.35
+      },
+      {
+        "title": "Will Arsenal win the 2025\u201326 Champions League?",
+        "outcome": "Yes",
+        "avg_price": 0.023,
+        "pnl": 546543.0,
+        "fee": 0.0
+      }
+    ]
+  },
+  {
+    "name": "mooseborzoii",
+    "wallet": "0x1f3a646ce5cbe2c70270e7a46161d89b7c7b895d",
+    "economic_pnl": 1387085.9,
+    "realized_market_pnl": 1341553.04,
+    "realized_combo_pnl": 0.0,
+    "pnl_7d_growth": 329285.97,
+    "win_interval_pct": 54.5,
+    "max_dd_7d": 1338831.86,
+    "volume_usdc": 46544654.03,
+    "trade_count_fills": 1704,
+    "maker_rebate": 63325.29,
+    "taker_rebate": 42668.62,
+    "reward_income": 25577.46,
+    "yield_income": 0.0,
+    "fees_paid": -86038.51,
+    "activity_types": {
+      "TRADE": 433,
+      "REDEEM": 67
+    },
+    "trade_sides": {
+      "BUY": 433
+    },
+    "avg_price": 0.468,
+    "median_price": 0.48,
+    "avg_usdc": 626.05,
+    "median_usdc": 65.4,
+    "categories_by_count": {
+      "Other / General": 223,
+      "Geopolitics & Conflict": 149,
+      "US Sports: Spreads": 58,
+      "Sports: Totals / Props": 3
+    },
+    "categories_by_usdc": {
+      "Other / General": 119822.0,
+      "US Sports: Spreads": 82043.0,
+      "Geopolitics & Conflict": 68679.0,
+      "Sports: Totals / Props": 534.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 59.3,
+    "med_delta_s": 3.0,
+    "top_open": [
+      {
+        "title": "Spread: Clippers (-4.5)",
+        "outcome": "Clippers",
+        "avg_price": 0.525,
+        "cur_price": 0.935,
+        "val": 255781.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Kings vs. Clippers",
+        "outcome": "Clippers",
+        "avg_price": 0.682,
+        "cur_price": 0.965,
+        "val": 253052.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Spread: Clippers (-5.5)",
+        "outcome": "Clippers",
+        "avg_price": 0.483,
+        "cur_price": 0.935,
+        "val": 59241.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Warriors vs. Lakers",
+        "outcome": "Lakers",
+        "avg_price": 0.636,
+        "cur_price": 1.0,
+        "val": 44584.0,
+        "fee": 0.0
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "Ravens vs. Falcons",
+        "outcome": "Ravens",
+        "avg_price": 0.303,
+        "pnl": 1150549.0,
+        "fee": 779.95
+      },
+      {
+        "title": "Lions vs. Panthers",
+        "outcome": "Panthers",
+        "avg_price": 0.485,
+        "pnl": 1079801.0,
+        "fee": 0.0
+      },
+      {
+        "title": "76ers vs. Knicks",
+        "outcome": "76ers",
+        "avg_price": 0.56,
+        "pnl": 760265.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Notre Dame vs. BYU",
+        "outcome": "BYU",
+        "avg_price": 0.426,
+        "pnl": 581649.0,
+        "fee": 1103.08
+      }
+    ]
+  },
+  {
+    "name": "VeryLucky888",
+    "wallet": "0x6d3c5bd13984b2de47c3a88ddc455309aab3d294",
+    "economic_pnl": 632831.5,
+    "realized_market_pnl": 403037.15,
+    "realized_combo_pnl": -10604.95,
+    "pnl_7d_growth": -107546.49,
+    "win_interval_pct": 49.1,
+    "max_dd_7d": 154798.06,
+    "volume_usdc": 263064520.3,
+    "trade_count_fills": 120003,
+    "maker_rebate": 401750.9,
+    "taker_rebate": 46032.4,
+    "reward_income": 51438.66,
+    "yield_income": 0.0,
+    "fees_paid": -258822.66,
+    "activity_types": {
+      "REDEEM": 132,
+      "TRADE": 365,
+      "MERGE": 3
+    },
+    "trade_sides": {
+      "BUY": 263,
+      "SELL": 102
+    },
+    "avg_price": 0.513,
+    "median_price": 0.51,
+    "avg_usdc": 44.07,
+    "median_usdc": 10.41,
+    "categories_by_count": {
+      "Other / General": 167,
+      "Sports: Totals / Props": 69,
+      "Tennis": 50,
+      "Global Soccer": 37
+    },
+    "categories_by_usdc": {
+      "Sports: Totals / Props": 4604.0,
+      "Other / General": 4182.0,
+      "Tennis": 4096.0,
+      "Global Soccer": 1981.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 41.2,
+    "med_delta_s": 9.0,
+    "top_open": [
+      {
+        "title": "Will CF Monterrey win on 2026-10-21?",
+        "outcome": "Yes",
+        "avg_price": 0.52,
+        "cur_price": 1.0,
+        "val": 8995.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Will Club Puebla win on 2026-10-21?",
+        "outcome": "No",
+        "avg_price": 0.76,
+        "cur_price": 1.0,
+        "val": 8970.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Chiefs vs. Seahawks",
+        "outcome": "Seahawks",
+        "avg_price": 0.549,
+        "cur_price": 0.575,
+        "val": 7630.0,
+        "fee": 44.33
+      },
+      {
+        "title": "Spread: Lakers (-6.5)",
+        "outcome": "Lakers",
+        "avg_price": 0.495,
+        "cur_price": 0.996,
+        "val": 7229.0,
+        "fee": 0.0
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "Game Spread: Medvedev (-4.5) vs Rinderknech (+4.5)",
+        "outcome": "Medvedev",
+        "avg_price": 0.47,
+        "pnl": 15950.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Will Paris Saint-Germain FC win on 2026-08-23?",
+        "outcome": "No",
+        "avg_price": 0.375,
+        "pnl": 13432.0,
+        "fee": 180.39
+      },
+      {
+        "title": "Medvedev vs. Rinderknech: Match O/U 38.5",
+        "outcome": "Under",
+        "avg_price": 0.49,
+        "pnl": 13295.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Will Club Atl\u00e9tico de Madrid win on 2026-05-24?",
+        "outcome": "No",
+        "avg_price": 0.623,
+        "pnl": 11804.0,
+        "fee": 0.57
+      }
+    ]
+  },
+  {
+    "name": "AnonymousUsername",
+    "wallet": "0x9703676286b93c2eca71ca96e8757104519a69c2",
+    "economic_pnl": 501918.25,
+    "realized_market_pnl": 292937.64,
+    "realized_combo_pnl": 0.0,
+    "pnl_7d_growth": -70236.11,
+    "win_interval_pct": 49.1,
+    "max_dd_7d": 209456.69,
+    "volume_usdc": 84254828.65,
+    "trade_count_fills": 12651,
+    "maker_rebate": 179974.98,
+    "taker_rebate": 0.0,
+    "reward_income": 22247.61,
+    "yield_income": 6758.04,
+    "fees_paid": -0.01,
+    "activity_types": {
+      "TRADE": 435,
+      "MERGE": 26,
+      "REDEEM": 36,
+      "MAKER_REBATE": 1,
+      "YIELD": 1,
+      "REWARD": 1
+    },
+    "trade_sides": {
+      "BUY": 417,
+      "SELL": 18
+    },
+    "avg_price": 0.493,
+    "median_price": 0.48,
+    "avg_usdc": 493.02,
+    "median_usdc": 17.03,
+    "categories_by_count": {
+      "Other / General": 191,
+      "US Sports: Spreads": 100,
+      "Sports: Totals / Props": 62,
+      "Politics & Elections": 43
+    },
+    "categories_by_usdc": {
+      "Other / General": 108001.0,
+      "US Sports: Spreads": 57626.0,
+      "Sports: Totals / Props": 38361.0,
+      "Global Soccer": 6077.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 32.9,
+    "med_delta_s": 21.0,
+    "top_open": [
+      {
+        "title": "Will the Democrats win the South Carolina Senate race in 2026?",
+        "outcome": "No",
+        "avg_price": 0.818,
+        "cur_price": 0.815,
+        "val": 32432.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Spread: Clippers (-5.5)",
+        "outcome": "Clippers",
+        "avg_price": 0.48,
+        "cur_price": 0.935,
+        "val": 17359.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Will the Republicans win the Texas Senate race in 2026?",
+        "outcome": "No",
+        "avg_price": 0.63,
+        "cur_price": 0.675,
+        "val": 16875.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Spread: Lakers (-6.5)",
+        "outcome": "Lakers",
+        "avg_price": 0.495,
+        "cur_price": 0.996,
+        "val": 13120.0,
+        "fee": 0.0
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "Will Mexico win on 2026-06-24?",
+        "outcome": "Yes",
+        "avg_price": 0.46,
+        "pnl": 156127.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Will Ecuador win on 2026-06-20?",
+        "outcome": "No",
+        "avg_price": 0.142,
+        "pnl": 155584.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Will Spain win on 2026-06-15?",
+        "outcome": "No",
+        "avg_price": 0.084,
+        "pnl": 113389.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Will Norway win on 2026-06-22?",
+        "outcome": "Yes",
+        "avg_price": 0.344,
+        "pnl": 101282.0,
+        "fee": 0.0
+      }
+    ]
+  },
+  {
+    "name": "Donkey14",
+    "wallet": "0xcd84d7f9262516865553555751609fb6f52abec6",
+    "economic_pnl": 60776.45,
+    "realized_market_pnl": 41589.37,
+    "realized_combo_pnl": 0.0,
+    "pnl_7d_growth": 207144.5,
+    "win_interval_pct": 67.9,
+    "max_dd_7d": 69241.4,
+    "volume_usdc": 10096013.02,
+    "trade_count_fills": 635,
+    "maker_rebate": 18056.69,
+    "taker_rebate": 0.0,
+    "reward_income": 1130.39,
+    "yield_income": 0.0,
+    "fees_paid": 0.0,
+    "activity_types": {
+      "REDEEM": 33,
+      "TRADE": 460,
+      "MAKER_REBATE": 4,
+      "REWARD": 3
+    },
+    "trade_sides": {
+      "BUY": 460
+    },
+    "avg_price": 0.452,
+    "median_price": 0.46,
+    "avg_usdc": 1629.96,
+    "median_usdc": 16.1,
+    "categories_by_count": {
+      "Other / General": 343,
+      "US Sports: Spreads": 111,
+      "Geopolitics & Conflict": 6
+    },
+    "categories_by_usdc": {
+      "Other / General": 491418.0,
+      "US Sports: Spreads": 258260.0,
+      "Geopolitics & Conflict": 103.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 27.2,
+    "med_delta_s": 14,
+    "top_open": [
+      {
+        "title": "Spread: Lakers (-6.5)",
+        "outcome": "Lakers",
+        "avg_price": 0.5,
+        "cur_price": 0.996,
+        "val": 79680.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Spread: Trail Blazers (-3.5)",
+        "outcome": "Trail Blazers",
+        "avg_price": 0.5,
+        "cur_price": 1.0,
+        "val": 5859.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Kings vs. Clippers",
+        "outcome": "Kings",
+        "avg_price": 0.36,
+        "cur_price": 0.035,
+        "val": 54.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Suns vs. Trail Blazers",
+        "outcome": "Suns",
+        "avg_price": 0.41,
+        "cur_price": 0.001,
+        "val": 49.0,
+        "fee": 0.0
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "Lions vs. Panthers",
+        "outcome": "Panthers",
+        "avg_price": 0.34,
+        "pnl": 97059.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Eagles vs. Bears",
+        "outcome": "Bears",
+        "avg_price": 0.36,
+        "pnl": 77316.0,
+        "fee": 0.0
+      },
+      {
+        "title": "LSU vs. Ole Miss",
+        "outcome": "Ole Miss",
+        "avg_price": 0.43,
+        "pnl": 66279.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Vikings vs. Bears",
+        "outcome": "Vikings",
+        "avg_price": 0.34,
+        "pnl": 58235.0,
+        "fee": 0.0
+      }
+    ]
+  },
+  {
+    "name": "tin54321",
+    "wallet": "0x91e67d77b45558ce69238bf8a79e2e902b1ee9c5",
+    "economic_pnl": 100879.64,
+    "realized_market_pnl": 106335.46,
+    "realized_combo_pnl": 0.0,
+    "pnl_7d_growth": 110086.02,
+    "win_interval_pct": 80.8,
+    "max_dd_7d": 96597.76,
+    "volume_usdc": 931948.75,
+    "trade_count_fills": 56,
+    "maker_rebate": 0.0,
+    "taker_rebate": 444.13,
+    "reward_income": 0.0,
+    "yield_income": 0.0,
+    "fees_paid": -5899.96,
+    "activity_types": {
+      "TRADE": 159,
+      "TAKER_REBATE": 8,
+      "REDEEM": 14
+    },
+    "trade_sides": {
+      "BUY": 130,
+      "SELL": 29
+    },
+    "avg_price": 0.601,
+    "median_price": 0.541,
+    "avg_usdc": 5987.1,
+    "median_usdc": 1900.0,
+    "categories_by_count": {
+      "Sports: Totals / Props": 136,
+      "Tennis": 22,
+      "Global Soccer": 1
+    },
+    "categories_by_usdc": {
+      "Sports: Totals / Props": 694161.0,
+      "Tennis": 257250.0,
+      "Global Soccer": 538.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 2.5,
+    "med_delta_s": 78.5,
+    "top_open": [
+      {
+        "title": "Guangzhou 2: Liam Broady vs Akira Santillan",
+        "outcome": "Liam Broady",
+        "avg_price": 0.684,
+        "cur_price": 0.575,
+        "val": 16817.0,
+        "fee": 316.17
+      },
+      {
+        "title": "Kings vs. Clippers: O/U 238.5",
+        "outcome": "Under",
+        "avg_price": 0.589,
+        "cur_price": 0.982,
+        "val": 9996.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Joventut vs. Barcelona: O/U 180.5",
+        "outcome": "Under",
+        "avg_price": 0.593,
+        "cur_price": 0.0,
+        "val": 0.0,
+        "fee": 112.02
+      },
+      {
+        "title": "Guangzhou 2: Coleman Wong vs Kasidit Samrej",
+        "outcome": "Kasidit Samrej",
+        "avg_price": 0.22,
+        "cur_price": 0.0,
+        "val": 0.0,
+        "fee": 458.21
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "Jazz vs. Grizzlies: O/U 242.5",
+        "outcome": "Under",
+        "avg_price": 0.527,
+        "pnl": 22368.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Celtics vs. Pistons: O/U 220.5",
+        "outcome": "Over",
+        "avg_price": 0.51,
+        "pnl": 20273.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Commanders vs. 49ers: O/U 44.5",
+        "outcome": "Under",
+        "avg_price": 0.435,
+        "pnl": 19784.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Jazz vs. Grizzlies: O/U 244.5",
+        "outcome": "Under",
+        "avg_price": 0.579,
+        "pnl": 18115.0,
+        "fee": 0.0
+      }
+    ]
+  },
+  {
+    "name": "SunlineTicker",
+    "wallet": "0x4df332e27f9ee3224f52ce30e3ce15c1075e788f",
+    "economic_pnl": 244155.57,
+    "realized_market_pnl": 313337.97,
+    "realized_combo_pnl": 0.0,
+    "pnl_7d_growth": 10343.36,
+    "win_interval_pct": 58.9,
+    "max_dd_7d": 7180.76,
+    "volume_usdc": 18001618.83,
+    "trade_count_fills": 12846,
+    "maker_rebate": 6649.04,
+    "taker_rebate": 5556.9,
+    "reward_income": 1551.65,
+    "yield_income": 443.13,
+    "fees_paid": -83383.13,
+    "activity_types": {
+      "TRADE": 450,
+      "REDEEM": 33,
+      "MAKER_REBATE": 1,
+      "YIELD": 1,
+      "TAKER_REBATE": 2,
+      "REWARD": 1,
+      "MERGE": 12
+    },
+    "trade_sides": {
+      "BUY": 450
+    },
+    "avg_price": 0.513,
+    "median_price": 0.51,
+    "avg_usdc": 368.75,
+    "median_usdc": 101.01,
+    "categories_by_count": {
+      "US Sports: Spreads": 227,
+      "Sports: Totals / Props": 121,
+      "Other / General": 47,
+      "Crypto & Short-Term Price": 35
+    },
+    "categories_by_usdc": {
+      "US Sports: Spreads": 112912.0,
+      "Other / General": 23846.0,
+      "Sports: Totals / Props": 20719.0,
+      "Crypto & Short-Term Price": 6195.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 51.7,
+    "med_delta_s": 5,
+    "top_open": [
+      {
+        "title": "Will there be no change in Fed interest rates after the October 2026 meeting?",
+        "outcome": "Yes",
+        "avg_price": 0.641,
+        "cur_price": 0.875,
+        "val": 17499.0,
+        "fee": 199.26
+      },
+      {
+        "title": "Will Fl\u00e1vio Bolsonaro win the 2026 Brazilian presidential election?",
+        "outcome": "Yes",
+        "avg_price": 0.725,
+        "cur_price": 0.787,
+        "val": 12051.0,
+        "fee": 102.91
+      },
+      {
+        "title": "Will Bitcoin reach $95,000 in October?",
+        "outcome": "No",
+        "avg_price": 0.843,
+        "cur_price": 0.974,
+        "val": 8091.0,
+        "fee": 68.83
+      },
+      {
+        "title": "Will Bitcoin reach $92,500 in October?",
+        "outcome": "No",
+        "avg_price": 0.778,
+        "cur_price": 0.945,
+        "val": 7134.0,
+        "fee": 83.52
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "Indian Premier League: Lucknow Super Giants vs Royal Challengers Bangalore",
+        "outcome": "Lucknow Super Giants",
+        "avg_price": 0.503,
+        "pnl": 47019.0,
+        "fee": 557.78
+      },
+      {
+        "title": "Will USA win the 2026 FIFA World Cup?",
+        "outcome": "Yes",
+        "avg_price": 0.013,
+        "pnl": 43556.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Indian Premier League: Gujarat Titans vs Royal Challengers Bengaluru",
+        "outcome": "Gujarat Titans",
+        "avg_price": 0.432,
+        "pnl": 35903.0,
+        "fee": 463.24
+      },
+      {
+        "title": "T20 World Cup: Australia vs Zimbabwe (Game 1)",
+        "outcome": "Zimbabwe",
+        "avg_price": 0.152,
+        "pnl": 31407.0,
+        "fee": 0.0
+      }
+    ]
+  },
+  {
+    "name": "0x9f15613ebf1f36d4bc679e1211d1fc567cf9bdb3",
+    "wallet": "0x9f15613ebf1f36d4bc679e1211d1fc567cf9bdb3",
+    "economic_pnl": 264349.92,
+    "realized_market_pnl": 272934.99,
+    "realized_combo_pnl": -12034.57,
+    "pnl_7d_growth": -44765.04,
+    "win_interval_pct": 47.3,
+    "max_dd_7d": 195416.97,
+    "volume_usdc": 9669524.0,
+    "trade_count_fills": 9559,
+    "maker_rebate": 23328.01,
+    "taker_rebate": 2667.98,
+    "reward_income": 3607.66,
+    "yield_income": 0.0,
+    "fees_paid": -26154.14,
+    "activity_types": {
+      "REDEEM": 131,
+      "TRADE": 360,
+      "MAKER_REBATE": 4,
+      "TAKER_REBATE": 2,
+      "REWARD": 3
+    },
+    "trade_sides": {
+      "BUY": 341,
+      "SELL": 19
+    },
+    "avg_price": 0.565,
+    "median_price": 0.52,
+    "avg_usdc": 1172.3,
+    "median_usdc": 101.92,
+    "categories_by_count": {
+      "Other / General": 110,
+      "US Sports: Spreads": 99,
+      "Sports: Totals / Props": 96,
+      "Global Soccer": 41
+    },
+    "categories_by_usdc": {
+      "US Sports: Spreads": 169044.0,
+      "Other / General": 121618.0,
+      "Global Soccer": 65814.0,
+      "Sports: Totals / Props": 57469.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 27.6,
+    "med_delta_s": 116,
+    "top_open": [
+      {
+        "title": "Tampa Bay Rays vs. Cleveland Guardians: O/U 6.5",
+        "outcome": "Under",
+        "avg_price": 0.51,
+        "cur_price": 1.0,
+        "val": 33235.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Spread: Lakers (-6.5)",
+        "outcome": "Lakers",
+        "avg_price": 0.49,
+        "cur_price": 0.996,
+        "val": 32038.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Will Athletic Club win on 2026-10-10?",
+        "outcome": "No",
+        "avg_price": 0.61,
+        "cur_price": 0.485,
+        "val": 14999.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Spread: Deportivo Toluca FC (-2.5)",
+        "outcome": "Club Tijuana",
+        "avg_price": 0.52,
+        "cur_price": 1.0,
+        "val": 10126.0,
+        "fee": 0.0
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "Dota 2: Iron Wing vs BoomBoys (BO3) - The International Playoffs",
+        "outcome": "BoomBoys",
+        "avg_price": 0.597,
+        "pnl": 141101.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Dota 2: Team Yandex vs Nigma Galaxy (BO3) - The International Playoffs",
+        "outcome": "Team Yandex",
+        "avg_price": 0.65,
+        "pnl": 55983.0,
+        "fee": 17.21
+      },
+      {
+        "title": "Cincinnati Reds vs. Atlanta Braves",
+        "outcome": "Cincinnati Reds",
+        "avg_price": 0.31,
+        "pnl": 33556.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Spread: Pacers (-2.5)",
+        "outcome": "Pacers",
+        "avg_price": 0.485,
+        "pnl": 33299.0,
+        "fee": 0.0
+      }
+    ]
+  },
+  {
+    "name": "chongchong37",
+    "wallet": "0x2879ded7fe05df00eddbb2fba412a0d30964411a",
+    "economic_pnl": 39507.72,
+    "realized_market_pnl": 41932.74,
+    "realized_combo_pnl": 0.0,
+    "pnl_7d_growth": 58671.62,
+    "win_interval_pct": 82.1,
+    "max_dd_7d": 28016.69,
+    "volume_usdc": 697800.16,
+    "trade_count_fills": 94,
+    "maker_rebate": 1061.93,
+    "taker_rebate": 270.9,
+    "reward_income": 7.42,
+    "yield_income": 0.0,
+    "fees_paid": -3765.27,
+    "activity_types": {
+      "TRADE": 459,
+      "REDEEM": 29,
+      "TAKER_REBATE": 6,
+      "MAKER_REBATE": 4,
+      "REWARD": 2
+    },
+    "trade_sides": {
+      "BUY": 455,
+      "SELL": 4
+    },
+    "avg_price": 0.465,
+    "median_price": 0.47,
+    "avg_usdc": 1085.39,
+    "median_usdc": 62.78,
+    "categories_by_count": {
+      "Sports: Totals / Props": 445,
+      "US Sports: Spreads": 14
+    },
+    "categories_by_usdc": {
+      "Sports: Totals / Props": 360683.0,
+      "US Sports: Spreads": 137509.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 62.9,
+    "med_delta_s": 2.0,
+    "top_open": [
+      {
+        "title": "Spread: Lakers (-7.5)",
+        "outcome": "Lakers",
+        "avg_price": 0.47,
+        "cur_price": 0.996,
+        "val": 41301.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Spread: Clippers (-4.5)",
+        "outcome": "Kings",
+        "avg_price": 0.48,
+        "cur_price": 0.065,
+        "val": 2600.0,
+        "fee": 0.0
+      },
+      {
+        "title": "CF Pachuca vs. CF Cruz Azul: O/U 2.5",
+        "outcome": "Under",
+        "avg_price": 0.455,
+        "cur_price": 0.235,
+        "val": 1687.0,
+        "fee": 88.7
+      },
+      {
+        "title": "Spread: Clippers (-5.5)",
+        "outcome": "Kings",
+        "avg_price": 0.52,
+        "cur_price": 0.065,
+        "val": 1170.0,
+        "fee": 0.0
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "Timberwolves vs. Heat: O/U 240.5",
+        "outcome": "Under",
+        "avg_price": 0.49,
+        "pnl": 22950.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Valencia CF vs. Athletic Club: O/U 1.5",
+        "outcome": "Under",
+        "avg_price": 0.469,
+        "pnl": 18976.0,
+        "fee": 416.23
+      },
+      {
+        "title": "Spread: Knicks (-4.5)",
+        "outcome": "76ers",
+        "avg_price": 0.51,
+        "pnl": 16758.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Spread: Wizards (-4.5)",
+        "outcome": "Wizards",
+        "avg_price": 0.49,
+        "pnl": 14761.0,
+        "fee": 0.0
+      }
+    ]
+  },
+  {
+    "name": "Herdonia",
+    "wallet": "0xd106952ebf30a3125affd8a23b6c1f30c35fc79c",
+    "economic_pnl": -59151.9,
+    "realized_market_pnl": 79871.13,
+    "realized_combo_pnl": 0.0,
+    "pnl_7d_growth": 59700.15,
+    "win_interval_pct": 52.7,
+    "max_dd_7d": 55334.15,
+    "volume_usdc": 64399951.34,
+    "trade_count_fills": 8823,
+    "maker_rebate": 10850.01,
+    "taker_rebate": 4460.87,
+    "reward_income": 14292.93,
+    "yield_income": 0.0,
+    "fees_paid": -168626.86,
+    "activity_types": {
+      "TRADE": 382,
+      "REDEEM": 117,
+      "MAKER_REBATE": 1
+    },
+    "trade_sides": {
+      "BUY": 382
+    },
+    "avg_price": 0.495,
+    "median_price": 0.5,
+    "avg_usdc": 264.87,
+    "median_usdc": 51.41,
+    "categories_by_count": {
+      "Sports: Totals / Props": 187,
+      "US Sports: Spreads": 122,
+      "Other / General": 61,
+      "Geopolitics & Conflict": 12
+    },
+    "categories_by_usdc": {
+      "Other / General": 65671.0,
+      "US Sports: Spreads": 22324.0,
+      "Sports: Totals / Props": 12544.0,
+      "Geopolitics & Conflict": 641.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 35.7,
+    "med_delta_s": 12,
+    "top_open": [
+      {
+        "title": "Spread: Clippers (-5.5)",
+        "outcome": "Clippers",
+        "avg_price": 0.485,
+        "cur_price": 0.935,
+        "val": 7844.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Suns vs. Trail Blazers: O/U 231.5",
+        "outcome": "Under",
+        "avg_price": 0.485,
+        "cur_price": 1.0,
+        "val": 7010.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Suns vs. Trail Blazers",
+        "outcome": "Trail Blazers",
+        "avg_price": 0.588,
+        "cur_price": 1.0,
+        "val": 6120.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Spread: Clippers (-4.5)",
+        "outcome": "Clippers",
+        "avg_price": 0.527,
+        "cur_price": 0.935,
+        "val": 6094.0,
+        "fee": 0.0
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "Lions vs. Bills",
+        "outcome": "Bills",
+        "avg_price": 0.726,
+        "pnl": 104763.0,
+        "fee": 3806.75
+      },
+      {
+        "title": "Spread: Chiefs (-10.5)",
+        "outcome": "Chiefs",
+        "avg_price": 0.465,
+        "pnl": 97996.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Bengals vs. Texans",
+        "outcome": "Bengals",
+        "avg_price": 0.441,
+        "pnl": 93452.0,
+        "fee": 2031.72
+      },
+      {
+        "title": "Lakers vs. Pistons",
+        "outcome": "Pistons",
+        "avg_price": 0.479,
+        "pnl": 80495.0,
+        "fee": 0.0
+      }
+    ]
+  },
+  {
+    "name": "0xfB07F48542d2b655e9D0Bf1cC92a8a6Feee8e2cC-1782415802542",
+    "wallet": "0xfb07f48542d2b655e9d0bf1cc92a8a6feee8e2cc",
+    "economic_pnl": -18130.73,
+    "realized_market_pnl": -38013.84,
+    "realized_combo_pnl": 0.0,
+    "pnl_7d_growth": -3853.71,
+    "win_interval_pct": 51.8,
+    "max_dd_7d": 80144.6,
+    "volume_usdc": 5374172.38,
+    "trade_count_fills": 6113,
+    "maker_rebate": 17988.24,
+    "taker_rebate": 0.0,
+    "reward_income": 1908.88,
+    "yield_income": 0.0,
+    "fees_paid": -14.0,
+    "activity_types": {
+      "REDEEM": 92,
+      "TRADE": 391,
+      "MAKER_REBATE": 4,
+      "REWARD": 4,
+      "MERGE": 9
+    },
+    "trade_sides": {
+      "BUY": 391
+    },
+    "avg_price": 0.479,
+    "median_price": 0.47,
+    "avg_usdc": 1213.01,
+    "median_usdc": 98.53,
+    "categories_by_count": {
+      "Sports: Totals / Props": 102,
+      "Other / General": 94,
+      "US Sports: Spreads": 75,
+      "Esports": 71
+    },
+    "categories_by_usdc": {
+      "Other / General": 183813.0,
+      "US Sports: Spreads": 155650.0,
+      "Sports: Totals / Props": 98521.0,
+      "Global Soccer": 23818.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 35.4,
+    "med_delta_s": 130.0,
+    "top_open": [
+      {
+        "title": "Will Club Puebla win on 2026-10-21?",
+        "outcome": "No",
+        "avg_price": 0.76,
+        "cur_price": 1.0,
+        "val": 9995.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Will Pumas de la UNAM win on 2026-10-21?",
+        "outcome": "No",
+        "avg_price": 0.679,
+        "cur_price": 0.949,
+        "val": 9011.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Will CF Monterrey win on 2026-10-21?",
+        "outcome": "Yes",
+        "avg_price": 0.52,
+        "cur_price": 1.0,
+        "val": 5997.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Will Club Santos Laguna win on 2026-10-21?",
+        "outcome": "Yes",
+        "avg_price": 0.42,
+        "cur_price": 0.82,
+        "val": 5740.0,
+        "fee": 0.0
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "LoL: FURIA Esports vs Cloud9 (BO5) - Worlds Play-In",
+        "outcome": "FURIA Esports",
+        "avg_price": 0.17,
+        "pnl": 24900.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Will Norway win on 2026-10-01?",
+        "outcome": "No",
+        "avg_price": 0.315,
+        "pnl": 21321.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Atlanta Braves vs. Los Angeles Dodgers",
+        "outcome": "Atlanta Braves",
+        "avg_price": 0.31,
+        "pnl": 20700.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Bears vs. Falcons: O/U 52.5",
+        "outcome": "Over",
+        "avg_price": 0.468,
+        "pnl": 18080.0,
+        "fee": 0.0
+      }
+    ]
+  },
+  {
+    "name": "BrotherObama",
+    "wallet": "0x8a8685a792c184e5c2ee8c7d4d4baba7c2c94998",
+    "economic_pnl": -525609.73,
+    "realized_market_pnl": -273359.79,
+    "realized_combo_pnl": 0.0,
+    "pnl_7d_growth": 316681.01,
+    "win_interval_pct": 75.0,
+    "max_dd_7d": 105928.04,
+    "volume_usdc": 16599352.83,
+    "trade_count_fills": 624,
+    "maker_rebate": 1324.12,
+    "taker_rebate": 134077.42,
+    "reward_income": 20.69,
+    "yield_income": 0.0,
+    "fees_paid": -387672.17,
+    "activity_types": {
+      "REDEEM": 88,
+      "TRADE": 386,
+      "MAKER_REBATE": 2,
+      "TAKER_REBATE": 24
+    },
+    "trade_sides": {
+      "SELL": 47,
+      "BUY": 339
+    },
+    "avg_price": 0.465,
+    "median_price": 0.48,
+    "avg_usdc": 16117.51,
+    "median_usdc": 10000.0,
+    "categories_by_count": {
+      "Esports": 204,
+      "Sports: Totals / Props": 76,
+      "US Sports: Spreads": 53,
+      "Other / General": 42
+    },
+    "categories_by_usdc": {
+      "Esports": 2300835.0,
+      "US Sports: Spreads": 1376535.0,
+      "Other / General": 1228609.0,
+      "Sports: Totals / Props": 899967.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 2.1,
+    "med_delta_s": 223,
+    "top_open": [
+      {
+        "title": "Spread: Lakers (-6.5)",
+        "outcome": "Lakers",
+        "avg_price": 0.514,
+        "cur_price": 0.996,
+        "val": 58070.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Tampa Bay Rays vs. Cleveland Guardians: O/U 6.5",
+        "outcome": "Over",
+        "avg_price": 0.49,
+        "cur_price": 0.001,
+        "val": 82.0,
+        "fee": 2040.0
+      },
+      {
+        "title": "Jazz vs. Grizzlies: O/U 242.5",
+        "outcome": "Over",
+        "avg_price": 0.484,
+        "cur_price": 0.0,
+        "val": 0.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Counter-Strike: fnatic vs Alliance - Map 2 Winner",
+        "outcome": "Alliance",
+        "avg_price": 0.564,
+        "cur_price": 0.0,
+        "val": 0.0,
+        "fee": 261.85
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "Seattle Mariners vs. Athletics: O/U 10.5",
+        "outcome": "Over",
+        "avg_price": 0.516,
+        "pnl": 206734.0,
+        "fee": 2840.42
+      },
+      {
+        "title": "Seattle Mariners vs. Athletics: O/U 9.5",
+        "outcome": "Over",
+        "avg_price": 0.512,
+        "pnl": 163335.0,
+        "fee": 4184.32
+      },
+      {
+        "title": "Toronto Blue Jays vs. Athletics: O/U 8.5",
+        "outcome": "Over",
+        "avg_price": 0.471,
+        "pnl": 161371.0,
+        "fee": 3784.98
+      },
+      {
+        "title": "Philadelphia Phillies vs. Atlanta Braves",
+        "outcome": "Atlanta Braves",
+        "avg_price": 0.502,
+        "pnl": 138976.0,
+        "fee": 0.0
+      }
+    ]
+  },
+  {
+    "name": "lpcapital1",
+    "wallet": "0x602785cdf56a03221130d3d42a577ac6cf444320",
+    "economic_pnl": -117837.1,
+    "realized_market_pnl": -96415.49,
+    "realized_combo_pnl": 0.0,
+    "pnl_7d_growth": 23934.81,
+    "win_interval_pct": 56.4,
+    "max_dd_7d": 25582.52,
+    "volume_usdc": 3619207.66,
+    "trade_count_fills": 6754,
+    "maker_rebate": 424.74,
+    "taker_rebate": 1035.65,
+    "reward_income": 21.91,
+    "yield_income": 0.0,
+    "fees_paid": -22903.91,
+    "activity_types": {
+      "REDEEM": 96,
+      "TRADE": 387,
+      "MAKER_REBATE": 7,
+      "TAKER_REBATE": 8,
+      "REWARD": 2
+    },
+    "trade_sides": {
+      "BUY": 387
+    },
+    "avg_price": 0.462,
+    "median_price": 0.5,
+    "avg_usdc": 378.82,
+    "median_usdc": 34.98,
+    "categories_by_count": {
+      "US Sports: Spreads": 135,
+      "Sports: Totals / Props": 131,
+      "Other / General": 55,
+      "Global Soccer": 53
+    },
+    "categories_by_usdc": {
+      "US Sports: Spreads": 82784.0,
+      "Sports: Totals / Props": 41774.0,
+      "Other / General": 9920.0,
+      "Global Soccer": 7627.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 21.8,
+    "med_delta_s": 191.0,
+    "top_open": [
+      {
+        "title": "Tennessee Tech vs. The Citadel",
+        "outcome": "Tennessee Tech",
+        "avg_price": 0.906,
+        "cur_price": 0.915,
+        "val": 693.0,
+        "fee": 1.93
+      },
+      {
+        "title": "UFC 333: Abubakar Vagaev vs. Jacob Malkoun (Middleweight, Early Prelims)",
+        "outcome": "Jacob Malkoun",
+        "avg_price": 0.36,
+        "cur_price": 0.405,
+        "val": 401.0,
+        "fee": 11.4
+      },
+      {
+        "title": "Austin Peay vs. North Alabama",
+        "outcome": "Austin Peay",
+        "avg_price": 0.83,
+        "cur_price": 0.81,
+        "val": 217.0,
+        "fee": 1.13
+      },
+      {
+        "title": "Rui Hachimura: Rebounds O/U 5.5",
+        "outcome": "Yes",
+        "avg_price": 0.49,
+        "cur_price": 1.0,
+        "val": 197.0,
+        "fee": 1.84
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "Spread: Wizards (-4.5)",
+        "outcome": "Wizards",
+        "avg_price": 0.49,
+        "pnl": 28333.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Indiana Fever vs. Los Angeles Sparks",
+        "outcome": "Los Angeles Sparks",
+        "avg_price": 0.316,
+        "pnl": 21318.0,
+        "fee": 200.05
+      },
+      {
+        "title": "Spread: Dayton Flyers (-6.5)",
+        "outcome": "St. Bonaventure Bonnies",
+        "avg_price": 0.542,
+        "pnl": 16450.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Spread: Duke Blue Devils (-9.5)",
+        "outcome": "Duke Blue Devils",
+        "avg_price": 0.472,
+        "pnl": 14586.0,
+        "fee": 0.0
+      }
+    ]
+  },
+  {
+    "name": "acorp",
+    "wallet": "0x99e42eb9038705165b22f821e27659c1dc41e4c4",
+    "economic_pnl": -229534.33,
+    "realized_market_pnl": -211648.94,
+    "realized_combo_pnl": 0.0,
+    "pnl_7d_growth": 27627.28,
+    "win_interval_pct": 54.5,
+    "max_dd_7d": 37873.52,
+    "volume_usdc": 9086897.0,
+    "trade_count_fills": 1756,
+    "maker_rebate": 6744.09,
+    "taker_rebate": 1631.07,
+    "reward_income": 248.89,
+    "yield_income": 0.21,
+    "fees_paid": -26509.65,
+    "activity_types": {
+      "REDEEM": 15,
+      "MAKER_REBATE": 5,
+      "TRADE": 476,
+      "TAKER_REBATE": 4
+    },
+    "trade_sides": {
+      "BUY": 464,
+      "SELL": 12
+    },
+    "avg_price": 0.519,
+    "median_price": 0.56,
+    "avg_usdc": 548.94,
+    "median_usdc": 25.77,
+    "categories_by_count": {
+      "Esports": 274,
+      "Geopolitics & Conflict": 92,
+      "US Sports: Spreads": 81,
+      "Tennis": 9
+    },
+    "categories_by_usdc": {
+      "Esports": 123431.0,
+      "Geopolitics & Conflict": 49892.0,
+      "Other / General": 40094.0,
+      "US Sports: Spreads": 23945.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 25.5,
+    "med_delta_s": 71,
+    "top_open": [
+      {
+        "title": "Warriors vs. Lakers",
+        "outcome": "Lakers",
+        "avg_price": 0.669,
+        "cur_price": 1.0,
+        "val": 74482.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Counter-Strike: BESTIA vs ShindeN (BO3) - Circuit X Curitiba Group B",
+        "outcome": "BESTIA",
+        "avg_price": 0.47,
+        "cur_price": 0.47,
+        "val": 470.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Will 1. FC Magdeburg win on 2026-10-28?",
+        "outcome": "No",
+        "avg_price": 0.98,
+        "cur_price": 0.971,
+        "val": 446.0,
+        "fee": 0.45
+      },
+      {
+        "title": "Tampa Bay Rays vs. Cleveland Guardians: O/U 6.5",
+        "outcome": "Over",
+        "avg_price": 0.49,
+        "cur_price": 0.001,
+        "val": 5.0,
+        "fee": 78.51
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "Counter-Strike: TheMongolz vs Spirit (BO3) - BLAST Open Rotterdam Group B",
+        "outcome": "TheMongolz",
+        "avg_price": 0.34,
+        "pnl": 69434.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Will France win on 2026-10-02?",
+        "outcome": "No",
+        "avg_price": 0.32,
+        "pnl": 63440.0,
+        "fee": 20.6
+      },
+      {
+        "title": "Counter-Strike: Legacy vs MIBR (BO3) - PGL Bucharest Group Stage",
+        "outcome": "MIBR",
+        "avg_price": 0.306,
+        "pnl": 53527.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Argentina vs. Cabo Verde: Both Teams to Score",
+        "outcome": "Yes",
+        "avg_price": 0.221,
+        "pnl": 45956.0,
+        "fee": 0.0
+      }
+    ]
+  },
+  {
+    "name": "YEEES-but-why",
+    "wallet": "0x9052a5f2324b8efa264a2a37e942770284143c2d",
+    "economic_pnl": -646307.82,
+    "realized_market_pnl": -643479.38,
+    "realized_combo_pnl": 0.0,
+    "pnl_7d_growth": -112336.6,
+    "win_interval_pct": 75.0,
+    "max_dd_7d": 262583.76,
+    "volume_usdc": 3691828.47,
+    "trade_count_fills": 166,
+    "maker_rebate": 6395.63,
+    "taker_rebate": 746.75,
+    "reward_income": 179.41,
+    "yield_income": 0.0,
+    "fees_paid": -10150.23,
+    "activity_types": {
+      "TRADE": 467,
+      "REDEEM": 17,
+      "MAKER_REBATE": 5,
+      "TAKER_REBATE": 4,
+      "REWARD": 7
+    },
+    "trade_sides": {
+      "BUY": 446,
+      "SELL": 21
+    },
+    "avg_price": 0.469,
+    "median_price": 0.45,
+    "avg_usdc": 1359.06,
+    "median_usdc": 44.0,
+    "categories_by_count": {
+      "Other / General": 214,
+      "Global Soccer": 108,
+      "US Sports: Spreads": 83,
+      "Esports": 62
+    },
+    "categories_by_usdc": {
+      "Global Soccer": 235120.0,
+      "Other / General": 215841.0,
+      "Esports": 140415.0,
+      "US Sports: Spreads": 43304.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 43.8,
+    "med_delta_s": 9.0,
+    "top_open": [
+      {
+        "title": "Will commitments to the 1W public sale exceed $40M?",
+        "outcome": "Yes",
+        "avg_price": 0.522,
+        "cur_price": 0.475,
+        "val": 1817.0,
+        "fee": 22.79
+      },
+      {
+        "title": "Will commitments to the 1W public sale exceed $60M?",
+        "outcome": "Yes",
+        "avg_price": 0.361,
+        "cur_price": 0.33,
+        "val": 1329.0,
+        "fee": 35.56
+      },
+      {
+        "title": "Will commitments to the 1W public sale exceed $30M?",
+        "outcome": "Yes",
+        "avg_price": 0.643,
+        "cur_price": 0.58,
+        "val": 1299.0,
+        "fee": 20.87
+      },
+      {
+        "title": "Will Fl\u00e1vio Bolsonaro win the 2026 Brazilian presidential election?",
+        "outcome": "Yes",
+        "avg_price": 0.846,
+        "cur_price": 0.787,
+        "val": 930.0,
+        "fee": 6.16
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "Timberwolves vs. Heat",
+        "outcome": "Timberwolves",
+        "avg_price": 0.458,
+        "pnl": 82644.0,
+        "fee": 5.0
+      },
+      {
+        "title": "Spread: Chiefs (-10.5)",
+        "outcome": "Chiefs",
+        "avg_price": 0.461,
+        "pnl": 69558.0,
+        "fee": 19.25
+      },
+      {
+        "title": "Broncos vs. 49ers",
+        "outcome": "49ers",
+        "avg_price": 0.608,
+        "pnl": 59330.0,
+        "fee": 45.13
+      },
+      {
+        "title": "Rams vs. Broncos: O/U 46.5",
+        "outcome": "Over",
+        "avg_price": 0.41,
+        "pnl": 43515.0,
+        "fee": 15.12
+      }
+    ]
+  },
+  {
+    "name": "UpTheBlues",
+    "wallet": "0x2a69660046d7acc4ab204d7cc5ba78b0776cd2f7",
+    "economic_pnl": -1379888.88,
+    "realized_market_pnl": 102940.95,
+    "realized_combo_pnl": 0.0,
+    "pnl_7d_growth": 322947.81,
+    "win_interval_pct": 61.8,
+    "max_dd_7d": 454750.38,
+    "volume_usdc": 176545033.27,
+    "trade_count_fills": 184989,
+    "maker_rebate": 0.0,
+    "taker_rebate": 1289055.82,
+    "reward_income": 0.0,
+    "yield_income": 0.0,
+    "fees_paid": -2771885.65,
+    "activity_types": {
+      "TRADE": 462,
+      "REDEEM": 38
+    },
+    "trade_sides": {
+      "BUY": 462
+    },
+    "avg_price": 0.522,
+    "median_price": 0.48,
+    "avg_usdc": 132.67,
+    "median_usdc": 48.53,
+    "categories_by_count": {
+      "Sports: Totals / Props": 223,
+      "Other / General": 111,
+      "Tennis": 81,
+      "US Sports: Spreads": 37
+    },
+    "categories_by_usdc": {
+      "Tennis": 22744.0,
+      "Other / General": 22377.0,
+      "Sports: Totals / Props": 13469.0,
+      "US Sports: Spreads": 2527.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 59.0,
+    "med_delta_s": 3,
+    "top_open": [
+      {
+        "title": "Spread: Independiente Santa Fe (-1.5)",
+        "outcome": "Jaguares de C\u00f3rdoba FC",
+        "avg_price": 0.394,
+        "cur_price": 1.0,
+        "val": 79450.0,
+        "fee": 948.77
+      },
+      {
+        "title": "Spread: Deportivo Toluca FC (-2.5)",
+        "outcome": "Club Tijuana",
+        "avg_price": 0.543,
+        "cur_price": 1.0,
+        "val": 43537.0,
+        "fee": 530.38
+      },
+      {
+        "title": "Spread: Deportivo Toluca FC (-1.5)",
+        "outcome": "Club Tijuana",
+        "avg_price": 0.396,
+        "cur_price": 1.0,
+        "val": 42634.0,
+        "fee": 493.96
+      },
+      {
+        "title": "Will CF Monterrey win on 2026-10-21?",
+        "outcome": "Yes",
+        "avg_price": 0.5,
+        "cur_price": 1.0,
+        "val": 39928.0,
+        "fee": 491.89
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "Will Faroe Islands win on 2026-09-26?",
+        "outcome": "No",
+        "avg_price": 0.476,
+        "pnl": 204641.0,
+        "fee": 4712.31
+      },
+      {
+        "title": "Mexico vs. Korea Republic: Both Teams to Score",
+        "outcome": "No",
+        "avg_price": 0.465,
+        "pnl": 174452.0,
+        "fee": 2429.37
+      },
+      {
+        "title": "Will Greece win on 2026-09-27?",
+        "outcome": "Yes",
+        "avg_price": 0.157,
+        "pnl": 156165.0,
+        "fee": 965.0
+      },
+      {
+        "title": "Will Deportivo Alav\u00e9s win on 2026-09-15?",
+        "outcome": "No",
+        "avg_price": 0.44,
+        "pnl": 142465.0,
+        "fee": 3080.4
+      }
+    ]
+  },
+  {
+    "name": "shark142",
+    "wallet": "0x2759769cd371bee44ec5bfc5e72c7f1f092b2b38",
+    "economic_pnl": -683238.82,
+    "realized_market_pnl": -667172.79,
+    "realized_combo_pnl": 0.0,
+    "pnl_7d_growth": -665976.32,
+    "win_interval_pct": 51.8,
+    "max_dd_7d": 715771.74,
+    "volume_usdc": 12427066.71,
+    "trade_count_fills": 1426,
+    "maker_rebate": 29916.43,
+    "taker_rebate": 6135.53,
+    "reward_income": 464.07,
+    "yield_income": 0.0,
+    "fees_paid": -52582.06,
+    "activity_types": {
+      "REDEEM": 12,
+      "MAKER_REBATE": 1,
+      "TAKER_REBATE": 1,
+      "TRADE": 486
+    },
+    "trade_sides": {
+      "BUY": 486
+    },
+    "avg_price": 0.311,
+    "median_price": 0.23,
+    "avg_usdc": 365.02,
+    "median_usdc": 10.12,
+    "categories_by_count": {
+      "Other / General": 352,
+      "Global Soccer": 134
+    },
+    "categories_by_usdc": {
+      "Other / General": 159550.0,
+      "Global Soccer": 17849.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 63.7,
+    "med_delta_s": 2,
+    "top_open": [
+      {
+        "title": "Will Real Madrid CF win on 2026-10-25?",
+        "outcome": "No",
+        "avg_price": 0.76,
+        "cur_price": 0.745,
+        "val": 124.0,
+        "fee": 1.42
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "Will Arsenal FC win on 2026-04-11?",
+        "outcome": "No",
+        "avg_price": 0.331,
+        "pnl": 175838.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Will Brentford FC win on 2026-03-16?",
+        "outcome": "No",
+        "avg_price": 0.356,
+        "pnl": 125024.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Will Spain win on 2026-06-15?",
+        "outcome": "No",
+        "avg_price": 0.093,
+        "pnl": 122134.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Will England win on 2026-06-23?",
+        "outcome": "No",
+        "avg_price": 0.232,
+        "pnl": 122124.0,
+        "fee": 0.0
+      }
+    ]
+  },
+  {
+    "name": "nigiri99",
+    "wallet": "0xdc41c39b95453c943174f369926018f6963bdd7e",
+    "economic_pnl": -2274602.42,
+    "realized_market_pnl": -1703887.08,
+    "realized_combo_pnl": 0.0,
+    "pnl_7d_growth": 105792.74,
+    "win_interval_pct": 48.2,
+    "max_dd_7d": 160592.61,
+    "volume_usdc": 58069852.26,
+    "trade_count_fills": 32111,
+    "maker_rebate": 6524.94,
+    "taker_rebate": 418536.62,
+    "reward_income": 41.9,
+    "yield_income": 280.99,
+    "fees_paid": -996099.79,
+    "activity_types": {
+      "TRADE": 392,
+      "REDEEM": 92,
+      "MERGE": 16
+    },
+    "trade_sides": {
+      "BUY": 392
+    },
+    "avg_price": 0.434,
+    "median_price": 0.44,
+    "avg_usdc": 117.76,
+    "median_usdc": 18.96,
+    "categories_by_count": {
+      "Other / General": 118,
+      "Politics & Elections": 87,
+      "Sports: Totals / Props": 63,
+      "Tennis": 54
+    },
+    "categories_by_usdc": {
+      "Sports: Totals / Props": 15519.0,
+      "Other / General": 12294.0,
+      "US Sports: Spreads": 6696.0,
+      "Tennis": 4997.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 40.2,
+    "med_delta_s": 11,
+    "top_open": [
+      {
+        "title": "Spread: Clippers (-5.5)",
+        "outcome": "Clippers",
+        "avg_price": 0.487,
+        "cur_price": 0.935,
+        "val": 52256.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Will CF Monterrey win on 2026-10-21?",
+        "outcome": "Yes",
+        "avg_price": 0.491,
+        "cur_price": 1.0,
+        "val": 49185.0,
+        "fee": 614.84
+      },
+      {
+        "title": "Will the Fed increase interest rates by 25 bps after the October 2026 meeting?",
+        "outcome": "No",
+        "avg_price": 0.725,
+        "cur_price": 0.875,
+        "val": 26381.0,
+        "fee": 220.92
+      },
+      {
+        "title": "Spread: Clippers (-4.5)",
+        "outcome": "Clippers",
+        "avg_price": 0.525,
+        "cur_price": 0.935,
+        "val": 21705.0,
+        "fee": 0.0
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "US Open ATP: Ben Shelton vs Carlos Alcaraz",
+        "outcome": "Ben Shelton",
+        "avg_price": 0.239,
+        "pnl": 221462.0,
+        "fee": 2577.96
+      },
+      {
+        "title": "Will CF Am\u00e9rica win on 2026-08-09?",
+        "outcome": "Yes",
+        "avg_price": 0.42,
+        "pnl": 155666.0,
+        "fee": 3194.61
+      },
+      {
+        "title": "Will FC Barcelona win on 2026-08-27?",
+        "outcome": "Yes",
+        "avg_price": 0.801,
+        "pnl": 128621.0,
+        "fee": 4794.59
+      },
+      {
+        "title": "Western Kentucky vs. Nevada",
+        "outcome": "Nevada",
+        "avg_price": 0.503,
+        "pnl": 120054.0,
+        "fee": 3016.08
+      }
+    ]
+  },
+  {
+    "name": "googleplay",
+    "wallet": "0xe9b710551dd82a44e79203c2394a2b10163ace7b",
+    "economic_pnl": -1362194.88,
+    "realized_market_pnl": -1345173.49,
+    "realized_combo_pnl": 0.0,
+    "pnl_7d_growth": -1601988.08,
+    "win_interval_pct": 98.2,
+    "max_dd_7d": 1755096.69,
+    "volume_usdc": 4893143.43,
+    "trade_count_fills": 22,
+    "maker_rebate": 124.93,
+    "taker_rebate": 823.94,
+    "reward_income": 0.0,
+    "yield_income": 0.0,
+    "fees_paid": -17970.25,
+    "activity_types": {
+      "REDEEM": 8,
+      "TRADE": 283,
+      "MAKER_REBATE": 2,
+      "TAKER_REBATE": 6
+    },
+    "trade_sides": {
+      "BUY": 283
+    },
+    "avg_price": 0.642,
+    "median_price": 0.58,
+    "avg_usdc": 17290.26,
+    "median_usdc": 275.55,
+    "categories_by_count": {
+      "Other / General": 129,
+      "Tennis": 98,
+      "US Sports: Spreads": 30,
+      "Weather & Climate": 18
+    },
+    "categories_by_usdc": {
+      "Other / General": 2662501.0,
+      "Tennis": 1436748.0,
+      "US Sports: Spreads": 505882.0,
+      "Weather & Climate": 133854.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 52.1,
+    "med_delta_s": 3.5,
+    "top_open": [
+      {
+        "title": "Suns vs. Trail Blazers",
+        "outcome": "Trail Blazers",
+        "avg_price": 0.604,
+        "cur_price": 1.0,
+        "val": 275179.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Spread: Trail Blazers (-3.5)",
+        "outcome": "Trail Blazers",
+        "avg_price": 0.51,
+        "cur_price": 1.0,
+        "val": 95366.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Spread: Lakers (-6.5)",
+        "outcome": "Warriors",
+        "avg_price": 0.503,
+        "cur_price": 0.004,
+        "val": 859.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Warriors vs. Lakers",
+        "outcome": "Warriors",
+        "avg_price": 0.33,
+        "cur_price": 0.001,
+        "val": 156.0,
+        "fee": 0.0
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "US Open ATP: Alexander Zverev vs Karen Khachanov",
+        "outcome": "Alexander Zverev",
+        "avg_price": 0.824,
+        "pnl": 302767.0,
+        "fee": 12168.4
+      },
+      {
+        "title": "Jazz vs. Grizzlies",
+        "outcome": "Grizzlies",
+        "avg_price": 0.545,
+        "pnl": 301816.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Mavericks vs. Rockets",
+        "outcome": "Rockets",
+        "avg_price": 0.798,
+        "pnl": 72779.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Spread: Grizzlies (-1.5)",
+        "outcome": "Grizzlies",
+        "avg_price": 0.53,
+        "pnl": 57446.0,
+        "fee": 0.0
+      }
+    ]
+  },
+  {
+    "name": "YYYYY999",
+    "wallet": "0x6ac5bb06a9eb05641fd5e82640268b92f3ab4b6e",
+    "economic_pnl": -2760260.02,
+    "realized_market_pnl": -2610276.56,
+    "realized_combo_pnl": 0.0,
+    "pnl_7d_growth": -1774971.08,
+    "win_interval_pct": 60.7,
+    "max_dd_7d": 1877681.1,
+    "volume_usdc": 101206239.81,
+    "trade_count_fills": 26554,
+    "maker_rebate": 67319.06,
+    "taker_rebate": 81255.13,
+    "reward_income": 18535.85,
+    "yield_income": 1704.06,
+    "fees_paid": -318797.56,
+    "activity_types": {
+      "TRADE": 492,
+      "REDEEM": 4,
+      "MERGE": 1,
+      "MAKER_REBATE": 1,
+      "TAKER_REBATE": 1,
+      "REWARD": 1
+    },
+    "trade_sides": {
+      "BUY": 492
+    },
+    "avg_price": 0.516,
+    "median_price": 0.52,
+    "avg_usdc": 318.6,
+    "median_usdc": 11.26,
+    "categories_by_count": {
+      "Other / General": 467,
+      "Esports": 25
+    },
+    "categories_by_usdc": {
+      "Other / General": 156208.0,
+      "Esports": 542.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 66.8,
+    "med_delta_s": 3,
+    "top_open": [
+      {
+        "title": "Suns vs. Trail Blazers",
+        "outcome": "Trail Blazers",
+        "avg_price": 0.579,
+        "cur_price": 1.0,
+        "val": 99463.0,
+        "fee": 0.0
+      },
+      {
+        "title": "LoL: G2 Esports vs Dplus KIA (BO1) - Worlds Group Stage",
+        "outcome": "Dplus KIA",
+        "avg_price": 0.61,
+        "cur_price": 0.605,
+        "val": 27225.0,
+        "fee": 535.27
+      },
+      {
+        "title": "LoL: Anyone's Legend vs Karmine Corp (BO1) - Worlds Group Stage",
+        "outcome": "Karmine Corp",
+        "avg_price": 0.34,
+        "cur_price": 0.345,
+        "val": 16936.0,
+        "fee": 527.81
+      },
+      {
+        "title": "T20 Series Afghanistan vs Sri Lanka: Afghanistan vs Sri Lanka",
+        "outcome": "Sri Lanka",
+        "avg_price": 0.53,
+        "cur_price": 0.848,
+        "val": 1023.0,
+        "fee": 0.0
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "Lakers vs. Rockets",
+        "outcome": "Lakers",
+        "avg_price": 0.316,
+        "pnl": 565274.0,
+        "fee": 0.0
+      },
+      {
+        "title": "LoL: HANJIN BRION vs LGD Gaming (BO5) - Demacia Cup Global Invitational Playoffs",
+        "outcome": "HANJIN BRION",
+        "avg_price": 0.502,
+        "pnl": 477011.0,
+        "fee": 10723.42
+      },
+      {
+        "title": "Timberwolves vs. Spurs",
+        "outcome": "Timberwolves",
+        "avg_price": 0.227,
+        "pnl": 459826.0,
+        "fee": 763.32
+      },
+      {
+        "title": "Cavaliers vs. Raptors",
+        "outcome": "Raptors",
+        "avg_price": 0.389,
+        "pnl": 338114.0,
+        "fee": 0.0
+      }
+    ]
+  },
+  {
+    "name": "0x3DFb153c197D4C19D3B31c1ecD2c7B6860eeabAf-1722957908185",
+    "wallet": "0x3dfb153c197d4c19d3b31c1ecd2c7b6860eeabaf",
+    "economic_pnl": -5080725.83,
+    "realized_market_pnl": -4483462.87,
+    "realized_combo_pnl": 0.0,
+    "pnl_7d_growth": -360756.47,
+    "win_interval_pct": 52.7,
+    "max_dd_7d": 582756.12,
+    "volume_usdc": 126089887.34,
+    "trade_count_fills": 3480,
+    "maker_rebate": 135821.86,
+    "taker_rebate": 581111.0,
+    "reward_income": 4480.62,
+    "yield_income": 156.69,
+    "fees_paid": -1318833.13,
+    "activity_types": {
+      "TRADE": 494,
+      "REDEEM": 5,
+      "MAKER_REBATE": 1
+    },
+    "trade_sides": {
+      "BUY": 494
+    },
+    "avg_price": 0.483,
+    "median_price": 0.51,
+    "avg_usdc": 784.76,
+    "median_usdc": 23.95,
+    "categories_by_count": {
+      "US Sports: Spreads": 242,
+      "Sports: Totals / Props": 193,
+      "Other / General": 59
+    },
+    "categories_by_usdc": {
+      "Sports: Totals / Props": 201035.0,
+      "US Sports: Spreads": 155642.0,
+      "Other / General": 30993.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 62.5,
+    "med_delta_s": 2,
+    "top_open": [
+      {
+        "title": "Spread: Lakers (-6.5)",
+        "outcome": "Lakers",
+        "avg_price": 0.496,
+        "cur_price": 0.996,
+        "val": 77055.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Warriors vs. Lakers: O/U 237.5",
+        "outcome": "Under",
+        "avg_price": 0.4,
+        "cur_price": 0.98,
+        "val": 55373.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Spread: Trail Blazers (-3.5)",
+        "outcome": "Trail Blazers",
+        "avg_price": 0.52,
+        "cur_price": 1.0,
+        "val": 19990.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Warriors vs. Lakers: O/U 233.5",
+        "outcome": "Under",
+        "avg_price": 0.508,
+        "cur_price": 0.91,
+        "val": 19464.0,
+        "fee": 0.0
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "England vs. Argentina: O/U 2.5",
+        "outcome": "Over",
+        "avg_price": 0.394,
+        "pnl": 547941.0,
+        "fee": 4359.17
+      },
+      {
+        "title": "Mexico vs. England: Team to Advance",
+        "outcome": "England",
+        "avg_price": 0.522,
+        "pnl": 544349.0,
+        "fee": 3900.96
+      },
+      {
+        "title": "Boston Red Sox vs. Seattle Mariners: O/U 6.5",
+        "outcome": "Under",
+        "avg_price": 0.483,
+        "pnl": 266810.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Argentina vs. Egypt: O/U 2.5",
+        "outcome": "Over",
+        "avg_price": 0.476,
+        "pnl": 255403.0,
+        "fee": 995.48
+      }
+    ]
+  },
+  {
+    "name": "Sassy-Bucket",
+    "wallet": "0x4bff30af91642dc7d2b19a8664378fe55c45fc26",
+    "economic_pnl": -5143325.37,
+    "realized_market_pnl": -4710052.65,
+    "realized_combo_pnl": 0.0,
+    "pnl_7d_growth": -406845.58,
+    "win_interval_pct": 69.6,
+    "max_dd_7d": 753477.26,
+    "volume_usdc": 82273292.98,
+    "trade_count_fills": 1447,
+    "maker_rebate": 100723.78,
+    "taker_rebate": 195105.93,
+    "reward_income": 794.83,
+    "yield_income": 0.0,
+    "fees_paid": -729897.25,
+    "activity_types": {
+      "TRADE": 489,
+      "MAKER_REBATE": 2,
+      "REDEEM": 7,
+      "TAKER_REBATE": 1,
+      "REWARD": 1
+    },
+    "trade_sides": {
+      "BUY": 489
+    },
+    "avg_price": 0.494,
+    "median_price": 0.49,
+    "avg_usdc": 1421.71,
+    "median_usdc": 9.61,
+    "categories_by_count": {
+      "Other / General": 445,
+      "Sports: Totals / Props": 25,
+      "Geopolitics & Conflict": 19
+    },
+    "categories_by_usdc": {
+      "Other / General": 434255.0,
+      "Geopolitics & Conflict": 237413.0,
+      "Sports: Totals / Props": 23550.0
+    },
+    "dual_outcome_pct": 0.0,
+    "arb_lt_1_count": 0,
+    "same_token_flip_pct": 0.0,
+    "dual_examples": [],
+    "under_5s_pct": 45.7,
+    "med_delta_s": 7.0,
+    "top_open": [
+      {
+        "title": "Warriors vs. Lakers",
+        "outcome": "Lakers",
+        "avg_price": 0.67,
+        "cur_price": 1.0,
+        "val": 299850.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Flyers vs. Sabres",
+        "outcome": "Flyers",
+        "avg_price": 0.34,
+        "cur_price": 1.0,
+        "val": 2531.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Bucks vs. Wizards",
+        "outcome": "Bucks",
+        "avg_price": 0.4,
+        "cur_price": 0.0,
+        "val": 0.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Jazz vs. Grizzlies",
+        "outcome": "Jazz",
+        "avg_price": 0.454,
+        "cur_price": 0.0,
+        "val": 0.0,
+        "fee": 0.0
+      }
+    ],
+    "top_wins": [
+      {
+        "title": "Ravens vs. Falcons",
+        "outcome": "Ravens",
+        "avg_price": 0.38,
+        "pnl": 372000.0,
+        "fee": 0.0
+      },
+      {
+        "title": "Texas State vs. San Diego State",
+        "outcome": "San Diego State",
+        "avg_price": 0.245,
+        "pnl": 301849.0,
+        "fee": 0.0
+      },
+      {
+        "title": "San Diego Padres vs. Seattle Mariners",
+        "outcome": "San Diego Padres",
+        "avg_price": 0.417,
+        "pnl": 291372.0,
+        "fee": 3628.5
+      },
+      {
+        "title": "UFC Fight Night: Arnold Allen vs. Melquizael Costa (Featherweight, Main Card)",
+        "outcome": "Arnold Allen",
+        "avg_price": 0.545,
+        "pnl": 286626.0,
+        "fee": 4672.84
+      }
+    ]
+  }
+]
