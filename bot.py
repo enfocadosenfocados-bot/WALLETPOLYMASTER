@@ -26,13 +26,16 @@ def print_banner(cfg: BotConfig):
     mode_str = "🔴 LIVE TRADING (DINERO REAL CLOB)" if cfg.LIVE_TRADING else "🟢 PAPER REALISTA EN VIVO (CON COLAS FIFO + SLIPPAGE + SPREAD + GAS)"
     is_tourney = (cfg.PORTFOLIO_MODE == "TOURNAMENT_10K_EQUAL")
     is_champ6 = (cfg.PORTFOLIO_MODE == "LIVE_6_CHAMPIONS_1K")
+    is_lowrisk4 = (cfg.PORTFOLIO_MODE == "LOW_RISK_4_NETHERLANDS")
     print("=" * 124)
-    if is_champ6:
+    if is_lowrisk4:
+        print(" 🛡️ POLYMARKET 4-STRATEGY LOW-RISK MASTER ENGINE ($1,000 USDC: S5, S8, S3, S4 | NETHERLANDS/AMSTERDAM VPS EDITION)")
+    elif is_champ6:
         print(" 🏆 POLYMARKET 6-CHAMPIONS PRODUCTION ENGINE ($1,000 USDC: $880 EN LAS 6 GANADORAS + $120 RESERVA + FRICCIÓN REAL)")
     elif is_tourney:
         print(" 🏆 POLYMARKET STRATEGY TOURNAMENT ARENA ($10,000 USDC = $1,000 AISLADOS POR CADA UNA DE LAS 10 ESTRATEGIAS)")
     else:
-        print(" 🤖 POLYMARKET AUTONOMOUS ENGINE + DYNAMIC $1,000 USDC MARGIN MANAGER (LONDON VPS)")
+        print(" 🤖 POLYMARKET AUTONOMOUS ENGINE + DYNAMIC $1,000 USDC MARGIN MANAGER")
     print(f" Modo Ejecución  : {mode_str}")
     print(
         f" Modo Portafolio : {cfg.PORTFOLIO_MODE} | "
@@ -48,9 +51,13 @@ def print_banner(cfg: BotConfig):
 def print_selected_portfolio_summary(buckets, engine: ExecutionEngine, cfg: BotConfig):
     is_tourney = (cfg.PORTFOLIO_MODE == "TOURNAMENT_10K_EQUAL")
     title = (
-        "\n📊 RESUMEN DEL PORTAFOLIO MAESTRO ($1,000.00 USDC EN LAS 6 ESTRATEGIAS CAMPEONAS + FRICCIÓN REAL):"
-        if cfg.PORTFOLIO_MODE == "LIVE_6_CHAMPIONS_1K"
-        else f"\n📊 RESUMEN DE ESTRATEGIAS Y ASIGNACIÓN DE MARGEN (SOBRE ${cfg.TOTAL_BANKROLL_USDC:,.2f} USDC):"
+        "\n📊 RESUMEN DEL PORTAFOLIO DE BAJO RIESGO ($1,000.00 USDC EN LAS 4 ESTRATEGIAS MÁS SEGURAS + FRICCIÓN REAL):"
+        if cfg.PORTFOLIO_MODE == "LOW_RISK_4_NETHERLANDS"
+        else (
+            "\n📊 RESUMEN DEL PORTAFOLIO MAESTRO ($1,000.00 USDC EN LAS 6 ESTRATEGIAS CAMPEONAS + FRICCIÓN REAL):"
+            if cfg.PORTFOLIO_MODE == "LIVE_6_CHAMPIONS_1K"
+            else f"\n📊 RESUMEN DE ESTRATEGIAS Y ASIGNACIÓN DE MARGEN (SOBRE ${cfg.TOTAL_BANKROLL_USDC:,.2f} USDC):"
+        )
     )
     print(title)
     for tag, mlist in buckets.items():
