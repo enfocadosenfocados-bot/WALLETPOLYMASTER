@@ -233,7 +233,6 @@ class AutonomousMarketScanner:
                     or "map handicap" in q_low
                     or "map 1" in q_low
                     or "map 2" in q_low
-                    or "set 1" in q_low
                     or "both teams to score" in q_low
                     or "draw" in q_low
                     or ("o/u" in q_low and ("2.5" in q_low or "1.5" in q_low or "3.5" in q_low or "8.5" in q_low or "9.5" in q_low or "10.5" in q_low))
@@ -352,6 +351,7 @@ class AutonomousMarketScanner:
                 # --- S3: 4-Leg Post-Only HFT Spread Harvester (calculate10) ---
                 if (
                     self.cfg.S3_ENABLED
+                    and not is_tennis_or_qual
                     and self.cfg.S3_MIN_SPREAD <= spread_a <= self.cfg.S3_MAX_SPREAD
                     and 0.15 <= mid_a <= 0.85
                     and vol24 >= self.cfg.S3_MIN_VOL_24H

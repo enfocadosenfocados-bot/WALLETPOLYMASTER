@@ -341,7 +341,13 @@ class ExecutionEngine:
 
         exits = 0
         for cid, inv in list(self.inventories.items()):
-            if inv.strategy_tag == "S10_TENNIS_PENNY_DUST":
+            # Market makers pasivos y canastas multirama NegRisk NO deben cerrarse con stop de pata coja taker
+            if inv.strategy_tag in (
+                "S3_POSTONLY_4LEG_MM",
+                "S4_NEGRISK_ARB",
+                "S5_NEGRISK_CONV_MERGE",
+                "S10_TENNIS_PENNY_DUST"
+            ):
                 continue
             unhedged_a = round(inv.shares_a - inv.shares_b, 4)
             unhedged_b = round(inv.shares_b - inv.shares_a, 4)
@@ -356,7 +362,7 @@ class ExecutionEngine:
             elapsed_unhedged = now - inv.unhedged_since
             max_wait = (
                 self.cfg.LEGGING_PREMATCH_UNHEDGED_SEC
-                if inv.strategy_tag in ("S1_VIGFREE_MAKER", "S7_SPREAD_MIDDLING")
+                if inv.strategy_tag in ("S1_VIGFREE_MAKER", "S7_SPREAD_MIDDLING", "S8_NICHE_PROPS_CORNERS")
                 else self.cfg.LEGGING_MAX_UNHEDGED_SEC
             )
 
@@ -377,8 +383,9 @@ class ExecutionEngine:
                     inv.realized_spread_pnl = round(inv.realized_spread_pnl + spread_slip_loss, 4)
                     inv.friction_costs_usdc = round(inv.friction_costs_usdc + friction_hit, 4)
                     self.total_friction_costs_usdc = round(self.total_friction_costs_usdc + friction_hit, 4)
+                    closed_vwap_a = inv.vwap_a
                     inv.shares_a = round(max(0.0, inv.shares_a - unhedged_a), 4)
-                    inv.cost_usdc_a = round(inv.shares_a * inv.vwap_a, 4)
+                    inv.cost_usdc_a = round(inv.shares_a * closed_vwap_a, 4)
                     inv.unhedged_since = None
                     inv.legging_exits_count += 1
                     self.total_legging_exits_count += 1
@@ -387,7 +394,7 @@ class ExecutionEngine:
                     exits += 1
                     print(
                         f"  🛡️ [LEGGING SCRATCH/STOP {inv.strategy_tag}] Cerrada pata suelta ({unhedged_a:.1f} sh '{inv.outcome_a}') "
-                        f"en '{inv.question[:34]}' @ Bid ${exit_px:.3f} (VWAP ${inv.vwap_a:.3f}) -> "
+                        f"en '{inv.question[:34]}' @ Bid ${exit_px:.3f} (VWAP ${closed_vwap_a:.3f}) -> "
                         f"Costo Spread/Slippage: ${spread_slip_loss:+.3f} USDC | Margen liberado"
                     )
 
